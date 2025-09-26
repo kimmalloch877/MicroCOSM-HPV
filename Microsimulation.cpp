@@ -2581,9 +2581,9 @@ void Indiv::GetNewHIVstate(int ID, double p, double p2, double p3, double p4, do
 					{
 						if ((HPVstage[yy] >= 1 && HPVstage[yy] <= 4) || (HPVstage[yy] == 6) || (HPVstage[yy] == 7))
 						{
-							 std::cout << "CurrYear " << CurrYear << "ic=" << ID << ", HPVtype=" << yy
-									  << ": TxV administered to ART woman, HPVstage was " << Register[ID-1].HPVstage[yy]
-									  << ", now set to 0" << std::endl;
+							 //std::cout << "CurrYear " << CurrYear << "ic=" << ID << ", HPVtype=" << yy
+								//	  << ": TxV administered to ART woman, HPVstage was " << Register[ID-1].HPVstage[yy]
+								//	  << ", now set to 0" << std::endl;
 							HPVstage[yy] = 0;
 							HPVstageE[yy] = 0;
 						}
@@ -12273,9 +12273,9 @@ void Pop::AssignVacc2024()
 					{
 						if ((Register[ic].HPVstage[yy] >= 1 && Register[ic].HPVstage[yy] <= 4) || Register[ic].HPVstage[yy] == 6 || Register[ic].HPVstage[yy] ==7 )
 						{
-							 std::cout << "ic=" << ic << ", HPVtype=" << yy
-									  << ": TxV dose 1 administered, HPVstage was " << Register[ic].HPVstage[yy]
-									  << ", now set to 0" << std::endl;
+							 //std::cout << "ic=" << ic << ", HPVtype=" << yy
+							//		  << ": TxV dose 1 administered, HPVstage was " << Register[ic].HPVstage[yy]
+							//		  << ", now set to 0" << std::endl;
 							Register[ic].HPVstage[yy] = 0; 
 							
 						}
@@ -12291,9 +12291,9 @@ void Pop::AssignVacc2024()
 							if ((Register[ic].HPVstage[yy] >= 1 && Register[ic].HPVstage[yy] <= 4) || Register[ic].HPVstage[yy] == 6 || Register[ic].HPVstage[yy] == 7)
 							{
 								Register[ic].HPVstage[yy] = 0;
-								std::cout << "ic=" << ic << ", HPVtype=" << yy
-									  << ": TxV dose 2 administered , HPVstage was " << Register[ic].HPVstage[yy]
-									  << ", now set to 0" << std::endl;
+							//	std::cout << "ic=" << ic << ", HPVtype=" << yy
+							//		  << ": TxV dose 2 administered , HPVstage was " << Register[ic].HPVstage[yy]
+							//		  << ", now set to 0" << std::endl;
 							}
 						}
 					}
