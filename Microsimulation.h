@@ -19,7 +19,7 @@ int StartYear = 1985; //do not change, ever!
 int CurrYear;
 int BehavCycleCount;
 int STDcycleCount;
-int ProjectionTerm =  136; //max 136// 18 for 2000 to 2002 cohort // 36 for up to 2020
+int ProjectionTerm =  96; //max 136// 18 for 2000 to 2002 cohort // 36 for up to 2020
 const int InitPop = 20000; //do not change, ever!
 const int MaxPop = 110000; //60000; change to 100000; if run to 2100;
 const int MaxCSWs = 500; //200; change to 500; if go to 2100;
@@ -91,7 +91,7 @@ int CycleD = 48; // Number of STD cycles per year (NB: must be integer multiple 
 // ---------------------------------------------------------------------------------------
 
 double r[InitPop], rprisk[InitPop], rpID[InitPop], rSTI[MaxPop][100];
-double r2[MaxPop], revent[MaxPop], rpAge[MaxPop], rpID2[MaxPop], hiv1618[MaxPop],  hivoth[MaxPop], wane[MaxPop];
+double r2[MaxPop], revent[MaxPop], rpAge[MaxPop], rpID2[MaxPop], hiv1618[MaxPop],  hivoth[MaxPop], wane[MaxPop], RandAcceptTxV[MaxPop], Rloss[MaxPop], EfficacyD1Rand[MaxPop], EfficacyD2Rand[MaxPop];
 const int ParamCombs =1; // number of input parameter combinations
 const int IterationsPerPC = 1; // number of iterations per parameter combination
 const int samplesize =ParamCombs*IterationsPerPC; // number of simulations (must = ParamCombs * IterationsPerPC)
@@ -325,8 +325,10 @@ double PropVaccinatedWHO; //proportion of girls vaccinated in the national progr
 double PropVaccinatedHIV; 
 double VaccEfficacy[13]; //HPV vaccine efficacy for each of 13 types (there is evidence of cross-protection)
 double VaccEfficacyNONA[13]; //HPV vaccine efficacy for each of 13 types (nonavalent vaccine)
-double TxVEfficacy[13]; // HPV therapeutic vaccine efficacy for each of 13 types HPV infection and CIN 1
-double TxVEfficacyCIN[13]; // HPV therapeutic vaccine efficacy for each of 13 types for CIN 2/3
+double TxVEfficacyD1[13]; // HPV therapeutic vaccine efficacy for each of 13 types HPV infection and CIN 1
+double TxVEfficacyD2[13];
+double TxVEfficacyD1CIN[13]; // HPV therapeutic vaccine efficacy for each of 13 types for CIN 2/3
+double TxVEfficacyD2CIN[13];
 // ----------------------------------------------------------------------------------------
 // HPV/CC parameters not defined in the classes below
 // ----------------------------------------------------------------------------------------
@@ -1345,7 +1347,7 @@ public:
 	double ConvertToDependent4(double rate1, double rate2, double rate3, double rate4, int ord);
 	void SimulateSexActs(int ID);
 	int RandomSexGenerator(double p, double lambda);
-	void GetNewHIVstate(int ID, double p, double p2, double p3, double p4);
+	void GetNewHIVstate(int ID, double p, double p2, double p3, double p4, double RandAcceptTxV, double Rloss, double EfficacyD1Rand, double EfficacyD2Rand);
 	void GetNewHSVstate(int ID, double p);
 	void GetNewTPstate(int ID, double p);
 	void GetNewHDstate(int ID, double p);
@@ -1354,22 +1356,22 @@ public:
 	void GetNewTVstate(int ID, double p);
 	void GetNewHPVstate(int ID, double p, int type);
 	void GetScreened(int ID, double rea,  double scr, double ade, double tts, double res, double ttC, double CCd, double SI, double SII, double SIII, double SIV, 
-							double SId, double SIId, double SIIId, double SIVd, double AccR, double EffR);
-	void AdministerTherapeuticVaccine(int ID, double AccR, double EffR);		
+							double SId, double SIId, double SIIId, double SIVd, double acceptRand, double efficacyD1Rand, double efficacyD2Rand, double D2LossRand);	
+	void AdministerTherapeuticVaccine(int ID, double acceptRand, double efficacyD1Rand, double efficacyD2Rand, double D2LossRand);
 	void ScreenAlgorithm(int ID, double rea, double ade, double tts, double res, double ttC, double CCd, double SI, double SII, double SIII, double SIV, 
-							double SId, double SIId, double SIIId, double SIVd, double AccR, double EffR);
+							double SId, double SIId, double SIIId, double SIVd, double acceptRand, double efficacyD1Rand, double efficacyD2Rand, double D2LossRand);
 	void HPVScreenAlgorithm(int ID, double rea, double ade, double tts, double res, double ttC, double CCd, double SI, double SII, double SIII, double SIV, 
 							double SId, double SIId, double SIIId, double SIVd);
 	void HPV_ThermalScreenAlgorithm(int ID, double rea, double ade, double tts, double res, double ttC, double CCd, double SI, double SII, double SIII, double SIV, 
 							double SId, double SIId, double SIIId, double SIVd);
 	void WHOGetScreened(int ID, double rea, double scr, double ade, double tts, double res, double ttC, double CCd, double SI, double SII, double SIII, double SIV, double clr, 
-							double SId, double SIId, double SIIId, double SIVd, double AccR, double EffR);
+							double SId, double SIId, double SIIId, double SIVd, double acceptRand, double efficacyD1Rand, double efficacyD2Rand, double D2LossRand);
 	void WHOScreenAlgorithm(int ID,  double tts, double ttC,double clr, double SI, double SII, double SIII, double SIV, 
 							double SId, double SIId, double SIIId, double SIVd);
 	void GetTreated(int ID, double res, double trt, double clr, double regr, double tts, double SI, double SII, double SIII, double SIV, 
 							double SId, double SIId, double SIIId, double SIVd);
 	void PerfectGetScreened(int ID, double rea,  double scr, double ade, double tts, double res, double ttC, double CCd, double SI, double SII, double SIII, double SIV, 
-							double SId, double SIId, double SIIId, double SIVd, double AccR, double EffR);
+							double SId, double SIId, double SIIId, double SIVd, double acceptRand, double efficacyD1Rand, double efficacyD2Rand, double D2LossRand);
 	
 	void AssignTimeinCIN3(int age_group, double p, int type );
 	static bool AnyHPV(const int* XXX, const vector<int> & type_subset, const vector<int> & stage_subset);

@@ -198,9 +198,13 @@ Proportion HIV+ vaccinated in WHO project (PropVaccinatedHIV)
 0.5
 Vaccine efficacy (nona) 
 1.00	1.00	1.00	1.00	0.00	0.00	1.00	0.00	1.00	0.00	1.00	0.00	0.00
-Therapeutic Vaccine efficacy for infection & CIN1
-1.00	1.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00
-Therapeutic Vaccine efficacy for CIN 2+  
-0.80	0.80	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00
+Therapeutic Vaccine efficacy for infection & CIN1 (dose 1)
+0.50	0.50	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00
+Therapeutic Vaccine efficacy for CIN 2+  (dose 1)
+0.30	0.30	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00
+Therapeutic Vaccine efficacy for infection & CIN1 (dose 2)
+0.90	0.90	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00
+Therapeutic Vaccine efficacy for CIN 2+  (dose 2)
+0.50	0.50	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00	0.00
 Parameters in this model are the posterior MEANS for the STI parameters and the
 averages of the 100 HIV parameter combinations providing best fit to the HIV data.
