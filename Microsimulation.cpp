@@ -2580,10 +2580,7 @@ void Indiv::GetNewHIVstate(int ID, double p, double p2, double p3, double p4, do
 					if (EfficacyD1Rand < adjustedTxVEfficacyD1[yy])
 					{
 						if ((HPVstage[yy] >= 1 && HPVstage[yy] <= 4) || (HPVstage[yy] == 6) || (HPVstage[yy] == 7))
-						{
-							 //std::cout << "CurrYear " << CurrYear << "ic=" << ID << ", HPVtype=" << yy
-								//	  << ": TxV administered to ART woman, HPVstage was " << Register[ID-1].HPVstage[yy]
-								//	  << ", now set to 0" << std::endl;
+						{ //checked random numbers sucessfully
 							HPVstage[yy] = 0;
 							HPVstageE[yy] = 0;
 						}
@@ -2591,8 +2588,11 @@ void Indiv::GetNewHIVstate(int ID, double p, double p2, double p3, double p4, do
 				}
 				if (Rloss < 0.7)
 				{
+					//std::cout << "CurrYear " << CurrYear << "ic=" << ID << ", Efficacy D2 Rand=" << EfficacyD2Rand
+					//<<  std::endl;
 					for (int yy = 0; yy < 13; yy++)
 					{
+						
 						TxVStatus[yy]++;
 						if (EfficacyD2Rand < adjustedTxVEfficacyD2[yy])
 						{
@@ -6791,10 +6791,12 @@ void Pop::GetHIVtransitions()
 	int tpp = Register.size();
 	for (ic = 0; ic<tpp; ic++){
 		r2[ic] = rg.Random();
-		if(CurrYear>=ImplementYR && CatchUpVaccHIV==1) { 
+		if(CurrYear>=ImplementYR && CatchUpVaccHIV==1){ 
 			hiv1618[ic] = rg1.Random();
 			hivoth[ic] = rg1.Random();
 			wane[ic] = rg1.Random();
+		}
+		if (AdministerMassTxVtoART==1){
 			RandAcceptTxV[ic] = rg1.Random();
 			Rloss[ic] = rg1.Random();
 			EfficacyD1Rand[ic] = rg1.Random();
@@ -12135,10 +12137,10 @@ void Pop::AssignVacc2024()
 	double rcatch[MaxPop];
 	double wane1[MaxPop];
 	double cross[MaxPop];
-	//double Rloss1[MaxPop];
-	//double EfficacyD1Rand1[MaxPop];
-	//double EfficacyD2Rand1[MaxPop];
-	//double RandAcceptTxV1[MaxPop];
+	double Rloss1[MaxPop];
+	double EfficacyD1Rand1[MaxPop];
+	double EfficacyD2Rand1[MaxPop];
+	double RandAcceptTxV1[MaxPop];
 	int seedy;
 	seedy = CurrSim * 92 + process_num * 7928 + CurrYear;
 	SimCount2 = (CurrSim - 1) / IterationsPerPC;
@@ -12150,10 +12152,10 @@ void Pop::AssignVacc2024()
 		rcatch[ic] = rg2.Random();
 		wane1[ic] = rg2.Random();
 		cross[ic] = rg2.Random();
-	//	RandAcceptTxV1[ic] = rg2.Random();
-	//	Rloss1[ic] = rg2.Random();
-	//	EfficacyD1Rand1[ic] = rg2.Random();
-	//	EfficacyD2Rand1[ic] = rg2.Random();
+		RandAcceptTxV1[ic] = rg2.Random();
+		Rloss1[ic] = rg2.Random();
+		EfficacyD1Rand1[ic] = rg2.Random();
+		EfficacyD2Rand1[ic] = rg2.Random();
 	}
 	// ofstream file("VaccDur.txt", std::ios::app);
 
@@ -12244,7 +12246,7 @@ void Pop::AssignVacc2024()
 			Register[ic].SexInd == 1)
 		{
 
-			if (RandAcceptTxV[ic] <= 0.5)
+			if (RandAcceptTxV1[ic] <= 0.5)
 			{ // probability of accepting vaccine
 				// Update vaccine statistics
 				RSApop.NewTxV[18 * Register[ic].SexInd + Register[ic].AgeGroup][CurrYear - StartYear] += 1;
@@ -12264,92 +12266,88 @@ void Pop::AssignVacc2024()
 						adjustedTxVEfficacyD2[yy] = TxVEfficacyD2[yy];
 					}
 					// Further efficacy reduction for WLHIV not on ART:
-					if (!(Register[ic].HIVstage == 0 || Register[ic].HIVstage == 5)){
+					if (!(Register[ic].HIVstage == 0 || Register[ic].HIVstage == 5))
+					{
 						adjustedTxVEfficacyD1[yy] *= ReductionFactor;
 						adjustedTxVEfficacyD2[yy] *= ReductionFactor; // multiply adjustedTxVEfficacy by reduction factor due to lowered immunocompetency in WLHIV not on ART
 					}
-						Register[ic].TxVStatus[yy]++;
-					if (EfficacyD1Rand[ic] < adjustedTxVEfficacyD1[yy])
+					Register[ic].TxVStatus[yy]++;
+					if (EfficacyD1Rand1[ic] < adjustedTxVEfficacyD1[yy])
 					{
-						if ((Register[ic].HPVstage[yy] >= 1 && Register[ic].HPVstage[yy] <= 4) || Register[ic].HPVstage[yy] == 6 || Register[ic].HPVstage[yy] ==7 )
+						if ((Register[ic].HPVstage[yy] >= 1 && Register[ic].HPVstage[yy] <= 4) || Register[ic].HPVstage[yy] == 6 || Register[ic].HPVstage[yy] == 7)
 						{
-							 //std::cout << "ic=" << ic << ", HPVtype=" << yy
-							//		  << ": TxV dose 1 administered, HPVstage was " << Register[ic].HPVstage[yy]
-							//		  << ", now set to 0" << std::endl;
-							Register[ic].HPVstage[yy] = 0; 
-							
+							 Register[ic].HPVstage[yy] = 0;
 						}
 					}
 				}
-				if (Rloss[ic] > 0.5)
+				if (Rloss1[ic] < 0.5)
 				{
 					for (int yy = 0; yy < 13; yy++)
 					{
 						Register[ic].TxVStatus[yy]++;
-						if (EfficacyD2Rand[ic] < adjustedTxVEfficacyD2[yy])
+						if (EfficacyD2Rand1[ic] < adjustedTxVEfficacyD2[yy])
 						{
 							if ((Register[ic].HPVstage[yy] >= 1 && Register[ic].HPVstage[yy] <= 4) || Register[ic].HPVstage[yy] == 6 || Register[ic].HPVstage[yy] == 7)
 							{
 								Register[ic].HPVstage[yy] = 0;
-							//	std::cout << "ic=" << ic << ", HPVtype=" << yy
-							//		  << ": TxV dose 2 administered , HPVstage was " << Register[ic].HPVstage[yy]
-							//		  << ", now set to 0" << std::endl;
 							}
 						}
 					}
-					if (AdministerMassTxVtoART == 1 &&
-						Register[ic].AgeExact >= MassTxVtoARTAgeMIN &&
-						Register[ic].AgeExact < MassTxVtoARTAgeMAX &&
-						Register[ic].AliveInd == 1 &&
-						Register[ic].SexInd == 1 &&
-						Register[ic].HIVstage == 5)
+				}
+			}
+		}
+		if (AdministerMassTxVtoART == 1 &&
+			Register[ic].AgeExact >= MassTxVtoARTAgeMIN &&
+			Register[ic].AgeExact < MassTxVtoARTAgeMAX &&
+			Register[ic].AliveInd == 1 &&
+			Register[ic].SexInd == 1 &&
+			Register[ic].HIVstage == 5)
+		{
+			//std::cout << "ic=" << ic << "randAccept" << RandAcceptTxV1[ic]
+			//		  << ": TxV dose 1 administered " << std::endl;
+			if (RandAcceptTxV1[ic] <= 0.9)
+			{ // probability of accepting vaccine
+				// Update vaccine statistics
+				RSApop.NewTxV[18 * Register[ic].SexInd + Register[ic].AgeGroup][CurrYear - StartYear] += 1;
+				// Mark as got therapeutic vaccine
+				Register[ic].GotTxV = 1;
+				// Determine adjusted vaccine efficacy for each HPV type based on HIV status
+				for (int yy = 0; yy < 13; yy++)
+				{
+					if (Register[ic].HPVstage[yy] > 2 && Register[ic].HPVstage[yy] <= 4)
 					{
-
-						if (RandAcceptTxV[ic] <= 0.9)
-						{ // probability of accepting vaccine
-							// Update vaccine statistics
-							RSApop.NewTxV[18 * Register[ic].SexInd + Register[ic].AgeGroup][CurrYear - StartYear] += 1;
-							// Mark as got therapeutic vaccine
-							Register[ic].GotTxV = 1;
-							
-							// Determine adjusted vaccine efficacy for each HPV type based on HIV status
-							for (int yy = 0; yy < 13; yy++)
-							{
-								if (Register[ic].HPVstage[yy] > 2 && Register[ic].HPVstage[yy] <= 4)
-								{
-									adjustedTxVEfficacyD1[yy] = TxVEfficacyD1CIN[yy];
-									adjustedTxVEfficacyD2[yy] = TxVEfficacyD2CIN[yy];
-								}
-								else
-								{
-									adjustedTxVEfficacyD1[yy] = TxVEfficacyD1[yy];
-									adjustedTxVEfficacyD2[yy] = TxVEfficacyD2[yy];
-								}
-								Register[ic].TxVStatus[yy]++;
-								if (EfficacyD1Rand[ic] < adjustedTxVEfficacyD1[yy])
-								{
-									if ((Register[ic].HPVstage[yy] >= 1 && Register[ic].HPVstage[yy] <= 4) || Register[ic].HPVstage[yy] == 6 || Register[ic].HPVstage[yy] == 7)
-									{
-										Register[ic].HPVstage[yy] = 0;
-									}
-								}
-							}
-						}
-						if (Rloss[ic] > 0.5)
+						adjustedTxVEfficacyD1[yy] = TxVEfficacyD1CIN[yy];
+						adjustedTxVEfficacyD2[yy] = TxVEfficacyD2CIN[yy];
+					}
+					else
+					{
+						adjustedTxVEfficacyD1[yy] = TxVEfficacyD1[yy];
+						adjustedTxVEfficacyD2[yy] = TxVEfficacyD2[yy];
+					}
+					Register[ic].TxVStatus[yy]++;
+					if (EfficacyD1Rand1[ic] < adjustedTxVEfficacyD1[yy])
+					{
+						if ((Register[ic].HPVstage[yy] >= 1 && Register[ic].HPVstage[yy] <= 4) || Register[ic].HPVstage[yy] == 6 || Register[ic].HPVstage[yy] == 7)
 						{
-							RSApop.NewTxV[18 * Register[ic].SexInd + Register[ic].AgeGroup][CurrYear - StartYear] += 1;
-							// Mark as got therapeutic vaccine
-							Register[ic].GotTxV = 1;
-							for (int yy = 0; yy < 13; yy++)
+							Register[ic].HPVstage[yy] = 0;
+							Register[ic].HPVstageE[yy] = 0;
+						}
+					}
+				}
+				if (Rloss1[ic] < 0.5)
+				{
+					RSApop.NewTxV[18 * Register[ic].SexInd + Register[ic].AgeGroup][CurrYear - StartYear] += 1;
+					// Mark as got therapeutic vaccine
+					Register[ic].GotTxV = 1;
+					for (int yy = 0; yy < 13; yy++)
+					{
+						if ((Register[ic].HPVstage[yy] >= 1 && Register[ic].HPVstage[yy] <= 4) || Register[ic].HPVstage[yy] == 6 || Register[ic].HPVstage[yy] == 7)
+						{
+							Register[ic].TxVStatus[yy]++;
+							if (EfficacyD2Rand1[ic] < adjustedTxVEfficacyD2[yy])
 							{
-								if ((Register[ic].HPVstage[yy] >= 1 && Register[ic].HPVstage[yy] <= 4) || Register[ic].HPVstage[yy] == 6 || Register[ic].HPVstage[yy] == 7)
-								{
-									Register[ic].TxVStatus[yy]++;
-									if (EfficacyD2Rand[ic] > adjustedTxVEfficacyD2[yy])
-									{
-										Register[ic].HPVstage[yy] = 0;
-									}
-								}
+								Register[ic].HPVstage[yy] = 0;
+								Register[ic].HPVstageE[yy] = 0;
 							}
 						}
 					}
@@ -12358,6 +12356,7 @@ void Pop::AssignVacc2024()
 		}
 	}
 }
+
 			void Pop::HitTargets(int WhichType)
 			{
 
