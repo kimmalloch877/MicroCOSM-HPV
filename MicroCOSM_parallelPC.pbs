@@ -15,6 +15,8 @@ ulimit -s unlimited
 module add gcc/5.1.0
 module add chpc/gnu/parallel-20180622
 
+cd $PBS_O_WORKDIR
+
 NP=`cat ${PBS_NODEFILE} | wc -l`
 START=1
 ((END=24))

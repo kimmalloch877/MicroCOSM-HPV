@@ -2579,7 +2579,7 @@ void Indiv::GetNewHIVstate(int ID, double p, double p2, double p3, double p4, do
 					TxVStatus[yy]++;
 					if (EfficacyD1Rand < adjustedTxVEfficacyD1[yy])
 					{
-						if ((HPVstage[yy] >= 1 && HPVstage[yy] <= 4) || (HPVstage[yy] == 6) || (HPVstage[yy] == 7))
+						if ((HPVstage[yy] >= 1 && HPVstage[yy] <= 4) || (HPVstage[yy] == 6) )
 						{ //checked random numbers sucessfully
 							HPVstage[yy] = 0;
 							HPVstageE[yy] = 0;
@@ -2596,7 +2596,7 @@ void Indiv::GetNewHIVstate(int ID, double p, double p2, double p3, double p4, do
 						TxVStatus[yy]++;
 						if (EfficacyD2Rand < adjustedTxVEfficacyD2[yy])
 						{
-							if ((HPVstage[yy] >= 1 && HPVstage[yy] <= 4) || (HPVstage[yy] == 6) || (HPVstage[yy] == 7))
+							if ((HPVstage[yy] >= 1 && HPVstage[yy] <= 4) || (HPVstage[yy] == 6) )
 							{
 								HPVstage[yy] = 0;
 								HPVstageE[yy] = 0;
@@ -5023,7 +5023,7 @@ void Pop::OneYear()
 	
 	if (UpdateStart == 1 && CurrYear==2030){ GetNumbersByHPVstageAge();}
 	//if(WHOscenario==1 && WHOvacc==1 && CurrYear==ImplementYR){
-	if((AdministerMassTxV ==1  || AdministerMassTxVtoART == 1) && (CurrYear == 2030 )){//CampaignYear[CurrYear-StartYear]==1){//#CurrYear==ImplementYR){
+	if((AdministerMassTxV ==1  || AdministerMassTxVtoART == 1) && (CampaignYear[CurrYear - StartYear]==1)){//CampaignYear[CurrYear-StartYear]==1){//#CurrYear==ImplementYR){
 		RSApop.AssignVacc2024();
 	}
 	GetPopPyramid();
@@ -12274,22 +12274,24 @@ void Pop::AssignVacc2024()
 					Register[ic].TxVStatus[yy]++;
 					if (EfficacyD1Rand1[ic] < adjustedTxVEfficacyD1[yy])
 					{
-						if ((Register[ic].HPVstage[yy] >= 1 && Register[ic].HPVstage[yy] <= 4) || Register[ic].HPVstage[yy] == 6 || Register[ic].HPVstage[yy] == 7)
+						if ((Register[ic].HPVstage[yy] >= 1 && Register[ic].HPVstage[yy] <= 4) || Register[ic].HPVstage[yy] == 6)
 						{
 							 Register[ic].HPVstage[yy] = 0;
+							 Register[ic].HPVstageE[yy] = 0;
 						}
 					}
 				}
-				if (Rloss1[ic] < 0.5)
+				if (Rloss1[ic] < 0.7)
 				{
 					for (int yy = 0; yy < 13; yy++)
 					{
 						Register[ic].TxVStatus[yy]++;
 						if (EfficacyD2Rand1[ic] < adjustedTxVEfficacyD2[yy])
 						{
-							if ((Register[ic].HPVstage[yy] >= 1 && Register[ic].HPVstage[yy] <= 4) || Register[ic].HPVstage[yy] == 6 || Register[ic].HPVstage[yy] == 7)
+							if ((Register[ic].HPVstage[yy] >= 1 && Register[ic].HPVstage[yy] <= 4) || Register[ic].HPVstage[yy] == 6 )
 							{
 								Register[ic].HPVstage[yy] = 0;
+								Register[ic].HPVstageE[yy] = 0;
 							}
 						}
 					}
@@ -12334,14 +12336,14 @@ void Pop::AssignVacc2024()
 						}
 					}
 				}
-				if (Rloss1[ic] < 0.5)
+				if (Rloss1[ic] < 0.7)
 				{
 					RSApop.NewTxV[18 * Register[ic].SexInd + Register[ic].AgeGroup][CurrYear - StartYear] += 1;
 					// Mark as got therapeutic vaccine
 					Register[ic].GotTxV = 1;
 					for (int yy = 0; yy < 13; yy++)
 					{
-						if ((Register[ic].HPVstage[yy] >= 1 && Register[ic].HPVstage[yy] <= 4) || Register[ic].HPVstage[yy] == 6 || Register[ic].HPVstage[yy] == 7)
+						if ((Register[ic].HPVstage[yy] >= 1 && Register[ic].HPVstage[yy] <= 4) || Register[ic].HPVstage[yy] == 6)
 						{
 							Register[ic].TxVStatus[yy]++;
 							if (EfficacyD2Rand1[ic] < adjustedTxVEfficacyD2[yy])
@@ -12700,8 +12702,8 @@ void Indiv::AdministerTherapeuticVaccine(int ID, double acceptRand, double effic
 {
 	double adjustedTxVEfficacyD1[13];
 	double adjustedTxVEfficacyD2[13];
-	// Only administer vaccine from 2030
-	if (CurrYear < 2030)
+	// Only administer vaccine from 2025
+	if (CurrYear < 2025)
 	{
 		return;
 	}
@@ -12743,7 +12745,7 @@ void Indiv::AdministerTherapeuticVaccine(int ID, double acceptRand, double effic
 			adjustedTxVEfficacyD1[xx] *= ReductionFactor;
 			adjustedTxVEfficacyD2[xx] *= ReductionFactor;
 		}
-		if ((HPVstage[xx] >= 1 && HPVstage[xx] <= 4) || (HPVstage[xx] == 6) || (HPVstage[xx] == 7))
+		if ((HPVstage[xx] >= 1 && HPVstage[xx] <= 4) || (HPVstage[xx] == 6))
 		{
 			TxVStatus[xx]++;
 			// Convert active infection to latent with probability equal to efficacy
