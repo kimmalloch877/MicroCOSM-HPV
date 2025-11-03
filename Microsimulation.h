@@ -93,7 +93,7 @@ int CycleD = 48; // Number of STD cycles per year (NB: must be integer multiple 
 double r[InitPop], rprisk[InitPop], rpID[InitPop], rSTI[MaxPop][100];
 double r2[MaxPop], revent[MaxPop], rpAge[MaxPop], rpID2[MaxPop], hiv1618[MaxPop],  hivoth[MaxPop], wane[MaxPop], RandAcceptTxV[MaxPop], Rloss[MaxPop], EfficacyD1Rand[MaxPop], EfficacyD2Rand[MaxPop];
 const int ParamCombs =1; // number of input parameter combinations
-const int IterationsPerPC = 1; // number of iterations per parameter combination
+const int IterationsPerPC = 50; // number of iterations per parameter combination
 const int samplesize =ParamCombs*IterationsPerPC; // number of simulations (must = ParamCombs * IterationsPerPC)
 int SeedRecord[ParamCombs][2]; // seeds used when FixedUncertainty = 1
 int GetSDfromData = 0; // Set to 1 if you want to calculate the standard deviation in the
@@ -1288,7 +1288,6 @@ public:
 	int reason; //0=routine screening; 1=diagnostic
 	int DiagnosedCC; //0=no; 1=yes 
 	int ARTnextScreen; //if 1, screen next round
-	int TxVStatus[13]; //0=no TxV; 1=TxV given
 	int GotTxV;
 	//int ExpTxV;
 	//WHO Screening
@@ -1436,7 +1435,6 @@ public:
 	int StageDiagNeg[4][136];
 	int StageDiagNoART[4][136];
 	int StageDiagOnART[4][136];
-	int TxVCount;
 	//double ScreenProb[8][136]; //Probability of entering screening  by age (4 categories) + HIV/ART status (neg/noART, ART), over time
 	double ModelCoverage[54][136];
 	double ModelHPVCoverage[54][136];
@@ -1523,6 +1521,7 @@ public:
 	void GetMacDprev();
 	void SaveMacDprev(const char* filout);
 	void SaveNewScreen(const char* filout);
+	void SaveNewTxV(const char* filout);
 	void SaveWeeksInStage(const char* filout);
 	void SaveStagediag(const char* filout);
 	void SaveAdultHPVstageAge(const char* filout);
