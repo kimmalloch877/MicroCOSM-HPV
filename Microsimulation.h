@@ -92,8 +92,8 @@ int CycleD = 48; // Number of STD cycles per year (NB: must be integer multiple 
 
 double r[InitPop], rprisk[InitPop], rpID[InitPop], rSTI[MaxPop][100];
 double r2[MaxPop], revent[MaxPop], rpAge[MaxPop], rpID2[MaxPop], hiv1618[MaxPop],  hivoth[MaxPop], wane[MaxPop], RandAcceptTxV[MaxPop], Rloss[MaxPop], EfficacyD1Rand[MaxPop], EfficacyD2Rand[MaxPop];
-const int ParamCombs =1; // number of input parameter combinations
-const int IterationsPerPC = 50; // number of iterations per parameter combination
+const int ParamCombs = 1; // number of input parameter combinations
+const int IterationsPerPC = 1; // number of iterations per parameter combination
 const int samplesize =ParamCombs*IterationsPerPC; // number of simulations (must = ParamCombs * IterationsPerPC)
 int SeedRecord[ParamCombs][2]; // seeds used when FixedUncertainty = 1
 int GetSDfromData = 0; // Set to 1 if you want to calculate the standard deviation in the
@@ -387,6 +387,7 @@ int RoutineScreening;//=1; //switch off screening =0
 
 int PerfectSchedule;//=0; //If SA's screening schedule is followed to a T
 int HPVDNA;//=1;
+int MnDCampaign;//=1; //HPVDNA should also be 1 if this is 1
 int HPVDNAThermal;//=1; //HPVDNA should also be 1 if this is 1
 double PropThermal;//=1.0;
 int HPVGenotyping;//=0;
@@ -414,8 +415,11 @@ int MassTxVWane;
 int AdministerMassTxVtoART;
 int MassTxVtoARTAgeMIN;
 int MassTxVtoARTAgeMAX;
-double ReductionFactor;
+double ReductionFactorHIV;
+double ReductionFactorHIVART;
 int TxVviaScreeningAlgorithm;
+int TxVtoHPVPos;
+int TxVtoHPVPosLTFU;
 //double ScreenReason[8];
 double ScreenReason[8][136]; //Reason for screen by age + HIV status, over time
 //int TotScreens[12];
@@ -1359,6 +1363,8 @@ public:
 	void AdministerTherapeuticVaccine(int ID, double acceptRand, double efficacyD1Rand, double efficacyD2Rand, double D2LossRand);
 	void ScreenAlgorithm(int ID, double rea, double ade, double tts, double res, double ttC, double CCd, double SI, double SII, double SIII, double SIV, 
 							double SId, double SIId, double SIIId, double SIVd, double acceptRand, double efficacyD1Rand, double efficacyD2Rand, double D2LossRand);
+	void MnDScreenAlgorithm(int ID, double rea, double ade, double tts, double res, double ttC, double CCd, double SI, double SII, double SIII, double SIV, 
+							double SId, double SIId, double SIIId, double SIVd);
 	void HPVScreenAlgorithm(int ID, double rea, double ade, double tts, double res, double ttC, double CCd, double SI, double SII, double SIII, double SIV, 
 							double SId, double SIId, double SIIId, double SIVd);
 	void HPV_ThermalScreenAlgorithm(int ID, double rea, double ade, double tts, double res, double ttC, double CCd, double SI, double SII, double SIII, double SIV, 
@@ -1437,6 +1443,7 @@ public:
 	int StageDiagOnART[4][136];
 	//double ScreenProb[8][136]; //Probability of entering screening  by age (4 categories) + HIV/ART status (neg/noART, ART), over time
 	double ModelCoverage[54][136];
+	double ModelTxVCoverage[54][136];
 	double ModelHPVCoverage[54][136];
 	double ModelVaccCoverage[108][136];
 	double ModelColpCoverage[54][136];
@@ -1521,7 +1528,6 @@ public:
 	void GetMacDprev();
 	void SaveMacDprev(const char* filout);
 	void SaveNewScreen(const char* filout);
-	void SaveNewTxV(const char* filout);
 	void SaveWeeksInStage(const char* filout);
 	void SaveStagediag(const char* filout);
 	void SaveAdultHPVstageAge(const char* filout);

@@ -1,9 +1,9 @@
 #!/bin/bash 
 #PBS -N Kimtest
 #PBS -P CBBI1106
-#PBS -q smp
-#PBS -l select=1:ncpus=24:mpiprocs=24
-#PBS -l walltime=12:00:00
+#PBS -q normal
+#PBS -l select=4:ncpus=24:mpiprocs=24
+#PBS -l walltime=16:00:00
 #PBS -m be
 #PBS -M kimmalloch@sun.ac.za
 #PBS -o /mnt/lustre/users/kmalloch/MicroCOSM/stdout.txt 
@@ -15,11 +15,9 @@ ulimit -s unlimited
 module add gcc/5.1.0
 module add chpc/gnu/parallel-20180622
 
-cd $PBS_O_WORKDIR
-
 NP=`cat ${PBS_NODEFILE} | wc -l`
 START=1
-((END=24))
+((END=96))
 
 echo "Starting job..."
 echo "Starting job..." 1>&2
