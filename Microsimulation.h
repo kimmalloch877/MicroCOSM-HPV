@@ -19,7 +19,7 @@ int StartYear = 1985; //do not change, ever!
 int CurrYear;
 int BehavCycleCount;
 int STDcycleCount;
-int ProjectionTerm =  96; //max 136// 18 for 2000 to 2002 cohort // 36 for up to 2020
+int ProjectionTerm =  136; //max 136// 18 for 2000 to 2002 cohort // 36 for up to 2020
 const int InitPop = 20000; //do not change, ever!
 const int MaxPop = 110000; //60000; change to 100000; if run to 2100;
 const int MaxCSWs = 500; //200; change to 500; if go to 2100;
@@ -93,7 +93,7 @@ int CycleD = 48; // Number of STD cycles per year (NB: must be integer multiple 
 double r[InitPop], rprisk[InitPop], rpID[InitPop], rSTI[MaxPop][100];
 double r2[MaxPop], revent[MaxPop], rpAge[MaxPop], rpID2[MaxPop], hiv1618[MaxPop],  hivoth[MaxPop], wane[MaxPop], RandAcceptTxV[MaxPop], Rloss[MaxPop], EfficacyD1Rand[MaxPop], EfficacyD2Rand[MaxPop];
 const int ParamCombs = 1; // number of input parameter combinations
-const int IterationsPerPC = 1; // number of iterations per parameter combination
+const int IterationsPerPC = 50; // number of iterations per parameter combination
 const int samplesize =ParamCombs*IterationsPerPC; // number of simulations (must = ParamCombs * IterationsPerPC)
 int SeedRecord[ParamCombs][2]; // seeds used when FixedUncertainty = 1
 int GetSDfromData = 0; // Set to 1 if you want to calculate the standard deviation in the
@@ -418,8 +418,6 @@ int MassTxVtoARTAgeMAX;
 double ReductionFactorHIV;
 double ReductionFactorHIVART;
 int TxVviaScreeningAlgorithm;
-int TxVtoHPVPos;
-int TxVtoHPVPosLTFU;
 //double ScreenReason[8];
 double ScreenReason[8][136]; //Reason for screen by age + HIV status, over time
 //int TotScreens[12];
@@ -1364,7 +1362,7 @@ public:
 	void ScreenAlgorithm(int ID, double rea, double ade, double tts, double res, double ttC, double CCd, double SI, double SII, double SIII, double SIV, 
 							double SId, double SIId, double SIIId, double SIVd, double acceptRand, double efficacyD1Rand, double efficacyD2Rand, double D2LossRand);
 	void MnDScreenAlgorithm(int ID, double rea, double ade, double tts, double res, double ttC, double CCd, double SI, double SII, double SIII, double SIV, 
-							double SId, double SIId, double SIIId, double SIVd);
+							double SId, double SIId, double SIIId, double SIVd, double acceptRand, double efficacyD1Rand, double efficacyD2Rand, double D2LossRand);
 	void HPVScreenAlgorithm(int ID, double rea, double ade, double tts, double res, double ttC, double CCd, double SI, double SII, double SIII, double SIV, 
 							double SId, double SIId, double SIIId, double SIVd);
 	void HPV_ThermalScreenAlgorithm(int ID, double rea, double ade, double tts, double res, double ttC, double CCd, double SI, double SII, double SIII, double SIV, 

@@ -5,7 +5,7 @@
 	"RoutineScreening"		: 1 , 
 	"CCcalib"			: 1 , 
 	"PerfectSchedule"		: 0 ,
-	"HPVDNA"			: 0 ,
+	"HPVDNA"			: 1 ,
 	"MnDCampaign"		: 1 ,	
 	"HPVDNAThermal"			: 0 ,
 	"PropThermal"			: 1.0 , 
@@ -21,7 +21,7 @@
 	"CatchUpVaccHIV"		: 0 , 
 	"CatchUpVacc"		: 0 , 
 	"CatchUpAgeMIN"		: 15 , 
-	"CatchUpAgeMAX"		:  70, 
+	"CatchUpAgeMAX"		:  60, 
 	"CatchUpCoverage"		: 0.90, 
 	"VaccineWane"			: 0 ,
 	"VaccDur"			: 10 ,
@@ -34,16 +34,14 @@
 	"ReductionFactorHIV"		:  1,
 	"ReductionFactorHIVART"		:  1,
 	"TxVviaScreeningAlgorithm"	:  0,
-	"TxVtoHPVPos"			:  0,
-	"TxVtoHPVPosLTFU"		:  0.5,
 	"UpdateStart"			: 0 ,
-	"CreateCohort"			: 0 , 
+	"CreateCohort"			: 1 , 
 	"UseMedians"			: 0 ,
 	"OneType"			: 0 , 
 	"WhichType"			: 0 ,
 	"targets"			: 0 ,
 	"GetMacD"			: 0 
-
+	
 }
 
 
