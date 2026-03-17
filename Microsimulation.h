@@ -418,6 +418,7 @@ int MassTxVtoARTAgeMAX;
 double ReductionFactorHIV;
 double ReductionFactorHIVART;
 int TxVviaScreeningAlgorithm;
+int TxVtoHPVPos;
 //double ScreenReason[8];
 double ScreenReason[8][136]; //Reason for screen by age + HIV status, over time
 //int TotScreens[12];
@@ -1407,6 +1408,7 @@ public:
 	int AdultHPVstageTrendAge[320][208];// 1st index is 16 age groups*20 risk groups; 2nd index is HPV stage in M (0-7) and F (8-15) (16) for each of the 13 types: 16*13=208
 	double MacDprev[500][14];
 	int NewScreen[54][136];
+	int NewReflex[54][136];
 	int NewHPVScreen[54][136];
 	int GetReferred[54][136];
 	int NewColposcopy[54][136];
@@ -1441,6 +1443,7 @@ public:
 	int StageDiagOnART[4][136];
 	//double ScreenProb[8][136]; //Probability of entering screening  by age (4 categories) + HIV/ART status (neg/noART, ART), over time
 	double ModelCoverage[54][136];
+	double ModelReflexCoverage[54][136];
 	double ModelTxVCoverage[54][136];
 	double ModelHPVCoverage[54][136];
 	double ModelVaccCoverage[108][136];

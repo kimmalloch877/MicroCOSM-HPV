@@ -18,14 +18,14 @@
 	"S3S4"				: 0 , 
 	"S5S6"				: 0 , 
 	"S7S11"				: 0 ,	
-	"CatchUpVaccHIV"		: 0 , 
+	"CatchUpVaccHIV"		: 0, 
 	"CatchUpVacc"		: 0 , 
-	"CatchUpAgeMIN"		: 15 , 
+	"CatchUpAgeMIN"		: 15, 
 	"CatchUpAgeMAX"		:  60, 
-	"CatchUpCoverage"		: 0.90, 
+	"CatchUpCoverage"		: 0.50, 
 	"VaccineWane"			: 0 ,
 	"VaccDur"			: 10 ,
-	"AdministerMassTxV"			:  0 ,
+	"AdministerMassTxV"			:  1 ,
 	"MassTxVAgeMIN"		: 25 , 
 	"MassTxVAgeMAX"		:  50, 
 	"AdministerMassTxVtoART"		:  0,
@@ -34,14 +34,14 @@
 	"ReductionFactorHIV"		:  1,
 	"ReductionFactorHIVART"		:  1,
 	"TxVviaScreeningAlgorithm"	:  0,
+	"TxVtoHPVPos"		:  0,
 	"UpdateStart"			: 0 ,
-	"CreateCohort"			: 1 , 
+	"CreateCohort"			: 0 , 
 	"UseMedians"			: 0 ,
 	"OneType"			: 0 , 
 	"WhichType"			: 0 ,
 	"targets"			: 0 ,
 	"GetMacD"			: 0 
-	
 }
 
 
