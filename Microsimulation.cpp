@@ -2547,7 +2547,7 @@ void Indiv::GetNewHIVstate(int ID, double p, double p2, double p3, double p4, do
 		(AgeExact >= MassTxVtoARTAgeMIN && AgeExact < MassTxVtoARTAgeMAX) && AliveInd == 1 && SexInd == 1)
 	{	
 		{
-			if (RandAcceptTxV < 0.9 && ((CatchUpVaccHIV == 1 && GotTxV == 0) || (CatchUpVaccHIV == 0)))
+			if ((RandAcceptTxV < 0.9) && ((CatchUpVaccHIV == 1 && GotTxV == 0) || (CatchUpVaccHIV == 0)))
 			{ 
 				if (CatchUpVaccHIV ==1 ){
 					RSApop.NewVACC[18 * SexInd + AgeGroup][CurrYear - StartYear] += 1;
@@ -6810,16 +6810,15 @@ void Pop::GetHIVtransitions()
 	int tpp = Register.size();
 	for (ic = 0; ic<tpp; ic++){
 		r2[ic] = rg.Random();
-		//if(CurrYear>=ImplementYR && CatchUpVaccHIV==1){ 
 		if(CurrYear>=ImplementYR){ 
 			hiv1618[ic] = rg1.Random();
 			hivoth[ic] = rg1.Random();
 			wane[ic] = rg1.Random();
+			RandAcceptTxV[ic] = rg1.Random();
+			Rloss[ic] = rg1.Random();
+			EfficacyD1Rand[ic] = rg1.Random();
+			EfficacyD2Rand[ic] = rg1.Random();
 		}
-		RandAcceptTxV[ic] = rg1.Random();
-		Rloss[ic] = rg1.Random();
-		EfficacyD1Rand[ic] = rg1.Random();
-		EfficacyD2Rand[ic] = rg1.Random();
 	}
 
 	for (ic = 0; ic<tpp; ic++){
@@ -12151,7 +12150,6 @@ void Pop::GetONARTprev(STDtransition* a, int STDind)
 
 void Pop::AssignVacc2024()
 {
-
 	int ic, SimCount2, zz;
 	double adjustedTxVEfficacyD1[13];
 	double adjustedTxVEfficacyD2[13];
@@ -12192,7 +12190,7 @@ void Pop::AssignVacc2024()
 				Register[ic].AliveInd == 1 &&
 				Register[ic].SexInd == 1)
 			{
-				if (RandAcceptTxV1[ic] < 0.5 && ((CatchUpVacc == 1 && Register[ic].GotTxV == 0) || (CatchUpVacc == 0)))
+				if (RandAcceptTxV1[ic] < 0.5) //&& ((CatchUpVacc == 1 && Register[ic].GotTxV == 0) || (CatchUpVacc == 0)))
 				{
 				RSApop.NewTxV[zz*18 + Register[ic].AgeGroup][CurrYear - StartYear] += 1;
 				Register[ic].GotTxV = 1;
@@ -12229,7 +12227,7 @@ void Pop::AssignVacc2024()
 							{
 								 Register[ic].HPVstage[yy] = 0;
 								 Register[ic].HPVstageE[yy] = 0;
-								 if (CatchUpVacc ==1 ){
+								 if (CatchUpVacc == 1 ){
 									Register[ic].VaccinationStatus[yy] = 1;
 								 }
 							}
@@ -12250,7 +12248,7 @@ void Pop::AssignVacc2024()
 								{
 									Register[ic].HPVstage[yy] = 0;
 									Register[ic].HPVstageE[yy] = 0;
-									if (CatchUpVacc ==1 ){
+									if (CatchUpVacc == 1 ){
 										Register[ic].VaccinationStatus[yy] = 1;
 									 }
 								}
@@ -12305,11 +12303,11 @@ void Pop::AssignVacc2024()
 			Register[ic].SexInd == 1 &&
 			Register[ic].HIVstage == 5)
 		{
-			if (RandAcceptTxV1[ic] < 0.9 && ((CatchUpVaccHIV == 1 && Register[ic].GotTxV == 0) || (CatchUpVaccHIV == 0)))
+			if (RandAcceptTxV1[ic] < 0.9) //&& ((CatchUpVaccHIV == 1 && Register[ic].GotTxV == 0) || (CatchUpVaccHIV == 0)))
 			{ 
 				RSApop.NewTxV[zz*18 + Register[ic].AgeGroup][CurrYear - StartYear] += 1;
 				Register[ic].GotTxV = 1;
-				if (CatchUpVacc ==1 ){
+				if (CatchUpVacc ==1){
 					RSApop.NewVACC[18 * Register[ic].SexInd + Register[ic].AgeGroup][CurrYear - StartYear] += 1;
 					Register[ic].GotVacc = 1;
 					}
@@ -12772,8 +12770,8 @@ void Indiv::AdministerTherapeuticVaccine(int ID, double acceptRand, double effic
 	if (HIVstage == 0 ) {zz=0;}
 	else if (HIVstage == 5){zz =1;}
 	else {zz=2;}
-	if (acceptRand < 0.9) // ((CatchUpVacc == 1 && GotTxV == 0) || (CatchUpVacc == 0))) - removed because can't track if they are a previous TxV recipient. (means increase wastage if TxV is prophylactic)
-	{ // this is for usecase 2: administer TxV to all eligible women regardless of HPV status
+	if (acceptRand < 0.9) // &&  ((CatchUpVacc == 1 && GotTxV == 0) || (CatchUpVacc == 0)))// - removed because can't track if they are a previous TxV recipient. (means increase wastage if TxV is prophylactic)
+	{ 
 		RSApop.NewTxV[zz*18 + AgeGroup][CurrYear - StartYear] += 1;
 		GotTxV = 1;	
 		if (CatchUpVacc == 1){
@@ -12829,41 +12827,6 @@ void Indiv::AdministerTherapeuticVaccine(int ID, double acceptRand, double effic
 			}
 		}
 	}
-/*	int totalVaccines = 0;
-	for (int row = 0; row < 54; row++) {
-		for (int col = 0; col < 136; col++) {
-			totalVaccines += RSApop.NewTxV[row][col];
-		}
-	}
-	int totalPVaccines = 0;
-	for (int row = 0; row < 108; row++) {
-		for (int col = 0; col < 136; col++) {
-			totalPVaccines += RSApop.NewVACC[row][col];
-		}
-	}
-	int sumWomen25to50 = 0;
-
-int womenIndex = 1;          // SexInd for women
-int ageStart = 6;            // 25–29
-int ageEnd   = 10;           // 50–54 (covers up to age 50)
-
-for (int age = ageStart; age <= ageEnd; age++) {
-    for (int year = 0; year < 136; year++) {
-        int row = 18 * womenIndex + age;
-        sumWomen25to50 += RSApop.NewVACC[row][year];
-    }
-}	std::cout 
-				<< "IDfirst dose assvac=" << ID
-				<< "Total vaccines administered: " << totalVaccines
-				<< "Total P vaccines administered: " << sumWomen25to50
-				<< " GotTxV=" << GotTxV
-				<< " NewTxV=" << RSApop.NewTxV[zz*18 + AgeGroup][CurrYear - StartYear]
-				<< "GotVacc" << GotVacc
-				<< "NewVaCC" << RSApop.NewTxV[zz*18 + AgeGroup][CurrYear - StartYear]
-				<< " CurrYear=" << CurrYear
-				<< " AgeExact=" << AgeExact
-				<< "\n";
-				*/
 }
 	
 
@@ -13920,6 +13883,11 @@ void Indiv::MnDScreenAlgorithm(int ID, double rea, double ade, double tts,
   else {
     zz = 2;
   }
+  // before handling all cytology/treatment logic give TxV dose
+	 if (TxVviaScreeningAlgorithm == 1 && CurrYear >= 2030) {
+          AdministerTherapeuticVaccine(ID, acceptRand, efficacyD1Rand,
+                                       efficacyD2Rand, D2LossRand);
+      }
   RSApop.NewHPVScreen[zz * 18 + AgeGroup][CurrYear - StartYear] += 1;
   // assign time to screen based on HIV status and age
   if (ade < 0.95) {
@@ -13952,7 +13920,7 @@ void Indiv::MnDScreenAlgorithm(int ID, double rea, double ade, double tts,
       repeat = 0;
       HPVrepeat = 0;
     } else {
-		if (TxVtoHPVPos ==1 && HPVstatus == 1 && (CurrYear >= 2030)){
+		if (TxVtoHPVPos == 1 && HPVstatus == 1 && (CurrYear >= 2030)){
 			AdministerTherapeuticVaccine(ID, acceptRand, efficacyD1Rand, efficacyD2Rand, D2LossRand);
 		}
 		 RSApop.NewReflex[zz * 18 + AgeGroup][CurrYear - StartYear] += 1;
@@ -14011,7 +13979,7 @@ void Indiv::MnDScreenAlgorithm(int ID, double rea, double ade, double tts,
         if (TrueStage >= 2 && TrueStage < 5) {
           if (res < 0.209) {
             ScreenResult = 0;
-          } else if (res < 0.201 + 0.157) {
+          } else if (res < 0.209 + 0.157) {
             ScreenResult = 1;
           } else {
             ScreenResult = 2;
@@ -14336,12 +14304,9 @@ void Indiv::MnDScreenAlgorithm(int ID, double rea, double ade, double tts,
         }
         repeat = 1;
       }
-      // after handling all cytology/treatment logic give one TxV dose
-      if (TxVviaScreeningAlgorithm == 1 && CurrYear >= 2030) {
-          AdministerTherapeuticVaccine(ID, acceptRand, efficacyD1Rand,
-                                       efficacyD2Rand, D2LossRand);
-      }
+     
     }
+	 
   } else { // Supposed to repeat smear in 3 months
     // derived from NHLS data - Weibull distr with scale 31.2  3-months
     // and shape 0.57
@@ -15296,7 +15261,6 @@ void Indiv::MnDScreenAlgorithm(int ID, double rea, double ade, double tts,
       repeat = 1;
     }
   }
-
   void Indiv::HPV_ThermalScreenAlgorithm(
       int ID, double rea, double ade, double tts, double res, double ttC,
       double CCd, double SI, double SII, double SIII, double SIV, double SId,
@@ -15357,7 +15321,7 @@ void Indiv::MnDScreenAlgorithm(int ID, double rea, double ade, double tts,
                     1;
 
                 if (HIVstage == 0) {
-                  if (res < 0.652) { // 0.652?
+                  if (res < 0.652) { 
                     for (xx = 0; xx < 13; xx++) {
                       if (HPVstage[xx] == 1 || HPVstage[xx] == 2 ||
                           HPVstage[xx] == 3 || HPVstage[xx] == 4) {
