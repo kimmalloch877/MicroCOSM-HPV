@@ -12367,499 +12367,502 @@ void Pop::AssignVacc2024()
 	}
 }
 
-			void Pop::HitTargets(int WhichType)
+void Pop::HitTargets(int WhichType)
+{
+
+	double TotPop[20], TotHPV[20];
+	int ic, ig, xx;
+
+	for (ig = 0; ig < 20; ig++)
+	{
+		TotPop[ig] = 0;
+		TotHPV[ig] = 0;
+	}
+	int tpp = Register.size();
+
+	for (ic = 0; ic < tpp; ic++)
+	{
+		if (Register[ic].AliveInd == 1)
+		{
+			// McDonald 2014, F, HIVneg
+			if (Register[ic].AgeExact >= 18 && Register[ic].AgeExact < 65 && Register[ic].SexInd == 1 && Register[ic].HIVstage == 0)
 			{
-
-				double TotPop[20], TotHPV[20];
-				int ic, ig, xx;
-
-				for (ig = 0; ig < 20; ig++)
+				TotPop[0] += 1;
+				if (Register[ic].HPVstage[WhichType] == 1)
 				{
-					TotPop[ig] = 0;
-					TotHPV[ig] = 0;
-				}
-				int tpp = Register.size();
-
-				for (ic = 0; ic < tpp; ic++)
-				{
-					if (Register[ic].AliveInd == 1)
-					{
-						// McDonald 2014, F, HIVneg
-						if (Register[ic].AgeExact >= 18 && Register[ic].AgeExact < 65 && Register[ic].SexInd == 1 && Register[ic].HIVstage == 0)
-						{
-							TotPop[0] += 1;
-							if (Register[ic].HPVstage[WhichType] == 1)
-							{
-								TotHPV[0] += 1;
-							}
-						}
-						// McDonald 2014, F, HIVpos
-						if (Register[ic].AgeExact >= 18 && Register[ic].AgeExact < 65 && Register[ic].SexInd == 1 && Register[ic].HIVstage > 0)
-						{
-							TotPop[1] += 1;
-							if (Register[ic].HPVstage[WhichType] == 1)
-							{
-								TotHPV[1] += 1;
-							}
-						}
-						// Giuliano 2012, F, HIVneg
-						if (Register[ic].AgeExact >= 15 && Register[ic].AgeExact < 25 && Register[ic].SexInd == 1 && Register[ic].HIVstage == 0 && Register[ic].VirginInd == 0)
-						{
-							TotPop[2] += 1;
-							if (Register[ic].HPVstage[WhichType] == 1)
-							{
-								TotHPV[2] += 1;
-							}
-						}
-						// Snyman 2011, F, not tested
-						if (Register[ic].AgeExact >= 18 && Register[ic].AgeExact < 65 && Register[ic].SexInd == 1)
-						{
-							TotPop[3] += 1;
-							if (Register[ic].HPVstage[WhichType] == 1)
-							{
-								TotHPV[3] += 1;
-							}
-						}
-						// Snyman 2012, F, not tested
-						if (Register[ic].AgeExact >= 18 && Register[ic].AgeExact < 65 && Register[ic].SexInd == 1)
-						{
-							TotPop[4] += 1;
-							if (Register[ic].HPVstage[WhichType] == 1)
-							{
-								TotHPV[4] += 1;
-							}
-						}
-						// Adler 2013, F, HIV neg
-						if (Register[ic].AgeExact >= 17 && Register[ic].AgeExact < 22 && Register[ic].SexInd == 1 && Register[ic].HIVstage == 0 && Register[ic].VirginInd == 0)
-						{
-							TotPop[5] += 1;
-							if (Register[ic].HPVstage[WhichType] == 1)
-							{
-								TotHPV[5] += 1;
-							}
-						}
-						// Adler 2013, F, HIV pos
-						if (Register[ic].AgeExact >= 17 && Register[ic].AgeExact < 22 && Register[ic].SexInd == 1 && Register[ic].HIVstage > 0 && Register[ic].VirginInd == 0)
-						{
-							TotPop[6] += 1;
-							if (Register[ic].HPVstage[WhichType] == 1)
-							{
-								TotHPV[6] += 1;
-							}
-						}
-						// Mubulawa 2015, F, HIV neg
-						if (Register[ic].AgeExact >= 16 && Register[ic].AgeExact < 23 && Register[ic].SexInd == 1 && Register[ic].HIVstage == 0 && Register[ic].VirginInd == 0)
-						{
-							TotPop[7] += 1;
-							TotPop[8] += 1;
-							if (Register[ic].HPVstage[WhichType] == 1)
-							{
-								TotHPV[7] += 1;
-								TotHPV[8] += 1;
-							}
-						}
-						// Mbulawa 2006, F, HIVpos
-						if (Register[ic].AgeExact >= 18 && Register[ic].AgeExact < 65 && Register[ic].SexInd == 1 && Register[ic].HIVstage > 0 && Register[ic].VirginInd == 0)
-						{
-							TotPop[9] += 1;
-							if (Register[ic].HPVstage[WhichType] == 1)
-							{
-								TotHPV[9] += 1;
-							}
-						}
-						// Mbulawa 2006, F, HIVneg
-						if (Register[ic].AgeExact >= 18 && Register[ic].AgeExact < 65 && Register[ic].SexInd == 1 && Register[ic].HIVstage == 0 && Register[ic].VirginInd == 0)
-						{
-							TotPop[10] += 1;
-							if (Register[ic].HPVstage[WhichType] == 1)
-							{
-								TotHPV[10] += 1;
-							}
-						}
-						// Denny 2002, F, HIVpos
-						if (Register[ic].AgeExact >= 18 && Register[ic].AgeExact < 53 && Register[ic].SexInd == 1 && Register[ic].HIVstage > 0 && Register[ic].VirginInd == 0)
-						{
-							TotPop[11] += 1;
-							if (Register[ic].HPVstage[WhichType] == 1)
-							{
-								TotHPV[11] += 1;
-							}
-						}
-						// CAPRISA 2007, F, HIV neg
-						if (Register[ic].AgeExact >= 18 && Register[ic].AgeExact < 40 && Register[ic].SexInd == 1 && Register[ic].HIVstage == 0 && Register[ic].VirginInd == 0)
-						{
-							TotPop[12] += 1;
-							if (Register[ic].HPVstage[WhichType] == 1)
-							{
-								TotHPV[12] += 1;
-							}
-						}
-						// Vardas 2005, M, HIV neg
-						if (Register[ic].AgeExact >= 16 && Register[ic].AgeExact < 25 && Register[ic].SexInd == 0 && Register[ic].HIVstage == 0 &&
-							Register[ic].VirginInd == 0 && Register[ic].LifetimePartners < 6)
-						{
-							TotPop[13] += 1;
-							if (Register[ic].HPVstage[WhichType] == 1)
-							{
-								TotHPV[13] += 1;
-							}
-						}
-						// Mbulawa 2006, M, HIV pos
-						if (Register[ic].AgeExact >= 18 && Register[ic].AgeExact < 65 && Register[ic].SexInd == 0 && Register[ic].HIVstage > 0 && Register[ic].VirginInd == 0)
-						{
-							TotPop[14] += 1;
-							if (Register[ic].HPVstage[WhichType] == 1)
-							{
-								TotHPV[14] += 1;
-							}
-						}
-						// Mbulawa 2006, M, HIV neg
-						if (Register[ic].AgeExact >= 18 && Register[ic].AgeExact < 65 && Register[ic].SexInd == 0 && Register[ic].HIVstage == 0 && Register[ic].VirginInd == 0)
-						{
-							TotPop[15] += 1;
-							if (Register[ic].HPVstage[WhichType] == 1)
-							{
-								TotHPV[15] += 1;
-							}
-						}
-						// Chikandiwa2015, M, HIV pos
-						if (Register[ic].AgeExact >= 18 && Register[ic].AgeExact < 65 && Register[ic].SexInd == 0 && Register[ic].HIVstage > 0 && Register[ic].VirginInd == 0)
-						{
-							TotPop[16] += 1;
-							if (Register[ic].HPVstage[WhichType] == 1)
-							{
-								TotHPV[16] += 1;
-							}
-						}
-
-						if (Register[ic].AgeExact >= 18 && Register[ic].AgeExact < 65 && Register[ic].SexInd == 1 && Register[ic].HIVstage > 0 &&
-							Register[ic].VirginInd == 0 && Register[ic].ARTweeks < 104)
-						{
-							TotPop[17] += 1;
-							if (Register[ic].HPVstage[WhichType] == 1)
-							{
-								TotHPV[17] += 1;
-							}
-						}
-						if (Register[ic].AgeExact >= 18 && Register[ic].AgeExact < 65 && Register[ic].SexInd == 1 && Register[ic].HIVstage > 0 &&
-							Register[ic].VirginInd == 0 && Register[ic].ARTweeks < 104)
-						{
-							TotPop[18] += 1;
-							if (Register[ic].HPVstage[WhichType] == 1)
-							{
-								TotHPV[18] += 1;
-							}
-						}
-						if (Register[ic].AgeExact >= 15 && Register[ic].AgeExact < 50 && Register[ic].SexInd == 1 && Register[ic].VirginInd == 0)
-						{
-							ig = Register[ic].AgeGroup - 2;
-							TotPop[19] += FPCweights[ig];
-
-							if (Register[ic].HPVstage[WhichType] == 1)
-							{
-								TotHPV[19] += FPCweights[ig];
-							}
-						}
-					}
-				}
-				// for(ig=0; ig<20; ig++){
-				//	Targets[ig].out[CurrSim - 1][CurrYear - StartYear] = 1.0 * TotHPV[ig] / TotPop[ig];
-				// }
-			}
-
-			void Pop::GetMacDprev()
-			{
-				int ic, iy, ig, is, xx, ir;
-				int TotPop[14], TotHPV[14];
-				for (xx = 0; xx < 14; xx++)
-				{
-					TotPop[xx] = 0;
-					TotHPV[xx] = 0;
-				}
-				int tpp = Register.size();
-				for (ic = 0; ic < tpp; ic++)
-				{
-					if (Register[ic].AliveInd == 1 && CurrYear == 2000 && Register[ic].AgeExact >= 17 && Register[ic].AgeExact < 50 && Register[ic].SexInd == 1 &&
-						Register[ic].VirginInd == 0)
-					{
-						iy = Register[ic].AgeGroup - 3;
-						if (Register[ic].HIVstage == 0)
-						{
-							TotPop[iy] += 1;
-							if (Indiv::AnyHPV(Register[ic].HPVstage, Register[ic].allhpv, {1}))
-							{
-								TotHPV[iy] += 1;
-							}
-						}
-						else
-						{
-							TotPop[7 + iy] += 1;
-							if (Indiv::AnyHPV(Register[ic].HPVstage, Register[ic].allhpv, {1}))
-							{
-								TotHPV[7 + iy] += 1;
-							}
-						}
-					}
-				}
-				for (xx = 0; xx < 14; xx++)
-				{
-					MacDprev[CurrSim - 1][xx] = 1.0 * TotHPV[xx] / TotPop[xx];
+					TotHPV[0] += 1;
 				}
 			}
-			void Pop::SaveMacDprev(const char *filout)
+			// McDonald 2014, F, HIVpos
+			if (Register[ic].AgeExact >= 18 && Register[ic].AgeExact < 65 && Register[ic].SexInd == 1 && Register[ic].HIVstage > 0)
 			{
-				int iy, is;
-				ofstream file(filout);
-
-				for (iy = 0; iy < 500; iy++)
+				TotPop[1] += 1;
+				if (Register[ic].HPVstage[WhichType] == 1)
 				{
-					for (is = 0; is < 14; is++)
-					{
-						file << right << MacDprev[iy][is] << "	";
-					}
-					file << endl;
+					TotHPV[1] += 1;
 				}
-				file.close();
+			}
+			// Giuliano 2012, F, HIVneg
+			if (Register[ic].AgeExact >= 15 && Register[ic].AgeExact < 25 && Register[ic].SexInd == 1 && Register[ic].HIVstage == 0 && Register[ic].VirginInd == 0)
+			{
+				TotPop[2] += 1;
+				if (Register[ic].HPVstage[WhichType] == 1)
+				{
+					TotHPV[2] += 1;
+				}
+			}
+			// Snyman 2011, F, not tested
+			if (Register[ic].AgeExact >= 18 && Register[ic].AgeExact < 65 && Register[ic].SexInd == 1)
+			{
+				TotPop[3] += 1;
+				if (Register[ic].HPVstage[WhichType] == 1)
+				{
+					TotHPV[3] += 1;
+				}
+			}
+			// Snyman 2012, F, not tested
+			if (Register[ic].AgeExact >= 18 && Register[ic].AgeExact < 65 && Register[ic].SexInd == 1)
+			{
+				TotPop[4] += 1;
+				if (Register[ic].HPVstage[WhichType] == 1)
+				{
+					TotHPV[4] += 1;
+				}
+			}
+			// Adler 2013, F, HIV neg
+			if (Register[ic].AgeExact >= 17 && Register[ic].AgeExact < 22 && Register[ic].SexInd == 1 && Register[ic].HIVstage == 0 && Register[ic].VirginInd == 0)
+			{
+				TotPop[5] += 1;
+				if (Register[ic].HPVstage[WhichType] == 1)
+				{
+					TotHPV[5] += 1;
+				}
+			}
+			// Adler 2013, F, HIV pos
+			if (Register[ic].AgeExact >= 17 && Register[ic].AgeExact < 22 && Register[ic].SexInd == 1 && Register[ic].HIVstage > 0 && Register[ic].VirginInd == 0)
+			{
+				TotPop[6] += 1;
+				if (Register[ic].HPVstage[WhichType] == 1)
+				{
+					TotHPV[6] += 1;
+				}
+			}
+			// Mubulawa 2015, F, HIV neg
+			if (Register[ic].AgeExact >= 16 && Register[ic].AgeExact < 23 && Register[ic].SexInd == 1 && Register[ic].HIVstage == 0 && Register[ic].VirginInd == 0)
+			{
+				TotPop[7] += 1;
+				TotPop[8] += 1;
+				if (Register[ic].HPVstage[WhichType] == 1)
+				{
+					TotHPV[7] += 1;
+					TotHPV[8] += 1;
+				}
+			}
+			// Mbulawa 2006, F, HIVpos
+			if (Register[ic].AgeExact >= 18 && Register[ic].AgeExact < 65 && Register[ic].SexInd == 1 && Register[ic].HIVstage > 0 && Register[ic].VirginInd == 0)
+			{
+				TotPop[9] += 1;
+				if (Register[ic].HPVstage[WhichType] == 1)
+				{
+					TotHPV[9] += 1;
+				}
+			}
+			// Mbulawa 2006, F, HIVneg
+			if (Register[ic].AgeExact >= 18 && Register[ic].AgeExact < 65 && Register[ic].SexInd == 1 && Register[ic].HIVstage == 0 && Register[ic].VirginInd == 0)
+			{
+				TotPop[10] += 1;
+				if (Register[ic].HPVstage[WhichType] == 1)
+				{
+					TotHPV[10] += 1;
+				}
+			}
+			// Denny 2002, F, HIVpos
+			if (Register[ic].AgeExact >= 18 && Register[ic].AgeExact < 53 && Register[ic].SexInd == 1 && Register[ic].HIVstage > 0 && Register[ic].VirginInd == 0)
+			{
+				TotPop[11] += 1;
+				if (Register[ic].HPVstage[WhichType] == 1)
+				{
+					TotHPV[11] += 1;
+				}
+			}
+			// CAPRISA 2007, F, HIV neg
+			if (Register[ic].AgeExact >= 18 && Register[ic].AgeExact < 40 && Register[ic].SexInd == 1 && Register[ic].HIVstage == 0 && Register[ic].VirginInd == 0)
+			{
+				TotPop[12] += 1;
+				if (Register[ic].HPVstage[WhichType] == 1)
+				{
+					TotHPV[12] += 1;
+				}
+			}
+			// Vardas 2005, M, HIV neg
+			if (Register[ic].AgeExact >= 16 && Register[ic].AgeExact < 25 && Register[ic].SexInd == 0 && Register[ic].HIVstage == 0 &&
+				Register[ic].VirginInd == 0 && Register[ic].LifetimePartners < 6)
+			{
+				TotPop[13] += 1;
+				if (Register[ic].HPVstage[WhichType] == 1)
+				{
+					TotHPV[13] += 1;
+				}
+			}
+			// Mbulawa 2006, M, HIV pos
+			if (Register[ic].AgeExact >= 18 && Register[ic].AgeExact < 65 && Register[ic].SexInd == 0 && Register[ic].HIVstage > 0 && Register[ic].VirginInd == 0)
+			{
+				TotPop[14] += 1;
+				if (Register[ic].HPVstage[WhichType] == 1)
+				{
+					TotHPV[14] += 1;
+				}
+			}
+			// Mbulawa 2006, M, HIV neg
+			if (Register[ic].AgeExact >= 18 && Register[ic].AgeExact < 65 && Register[ic].SexInd == 0 && Register[ic].HIVstage == 0 && Register[ic].VirginInd == 0)
+			{
+				TotPop[15] += 1;
+				if (Register[ic].HPVstage[WhichType] == 1)
+				{
+					TotHPV[15] += 1;
+				}
+			}
+			// Chikandiwa2015, M, HIV pos
+			if (Register[ic].AgeExact >= 18 && Register[ic].AgeExact < 65 && Register[ic].SexInd == 0 && Register[ic].HIVstage > 0 && Register[ic].VirginInd == 0)
+			{
+				TotPop[16] += 1;
+				if (Register[ic].HPVstage[WhichType] == 1)
+				{
+					TotHPV[16] += 1;
+				}
 			}
 
-			void Indiv::GetScreened(
-				int ID, double rea, double scr, double ade,
-				double tts, double res, double ttC, double CCd,
-				double SI, double SII, double SIII, double SIV,
-				double SId, double SIId, double SIIId, double SIVd,
-				double acceptRand, double efficacyD1Rand,
-				double efficacyD2Rand, double D2LossRand)
+			if (Register[ic].AgeExact >= 18 && Register[ic].AgeExact < 65 && Register[ic].SexInd == 1 && Register[ic].HIVstage > 0 &&
+				Register[ic].VirginInd == 0 && Register[ic].ARTweeks < 104)
 			{
+				TotPop[17] += 1;
+				if (Register[ic].HPVstage[WhichType] == 1)
+				{
+					TotHPV[17] += 1;
+				}
+			}
+			if (Register[ic].AgeExact >= 18 && Register[ic].AgeExact < 65 && Register[ic].SexInd == 1 && Register[ic].HIVstage > 0 &&
+				Register[ic].VirginInd == 0 && Register[ic].ARTweeks < 104)
+			{
+				TotPop[18] += 1;
+				if (Register[ic].HPVstage[WhichType] == 1)
+				{
+					TotHPV[18] += 1;
+				}
+			}
+			if (Register[ic].AgeExact >= 15 && Register[ic].AgeExact < 50 && Register[ic].SexInd == 1 && Register[ic].VirginInd == 0)
+			{
+				ig = Register[ic].AgeGroup - 2;
+				TotPop[19] += FPCweights[ig];
 
-				int xx, yy, zz;
-				// Get age that matches coverage age
-				yy = 0;
-				if (AgeGroup == 6 || AgeGroup == 7)
+				if (Register[ic].HPVstage[WhichType] == 1)
 				{
-					yy = 1;
+					TotHPV[19] += FPCweights[ig];
 				}
-				else if (AgeGroup == 8 || AgeGroup == 9)
+			}
+		}
+	}
+	// for(ig=0; ig<20; ig++){
+	//	Targets[ig].out[CurrSim - 1][CurrYear - StartYear] = 1.0 * TotHPV[ig] / TotPop[ig];
+	// }
+}
+
+void Pop::GetMacDprev()
+{
+	int ic, iy, ig, is, xx, ir;
+	int TotPop[14], TotHPV[14];
+	for (xx = 0; xx < 14; xx++)
+	{
+		TotPop[xx] = 0;
+		TotHPV[xx] = 0;
+	}
+	int tpp = Register.size();
+	for (ic = 0; ic < tpp; ic++)
+	{
+		if (Register[ic].AliveInd == 1 && CurrYear == 2000 && Register[ic].AgeExact >= 17 && Register[ic].AgeExact < 50 && Register[ic].SexInd == 1 &&
+			Register[ic].VirginInd == 0)
+		{
+			iy = Register[ic].AgeGroup - 3;
+			if (Register[ic].HIVstage == 0)
+			{
+				TotPop[iy] += 1;
+				if (Indiv::AnyHPV(Register[ic].HPVstage, Register[ic].allhpv, {1}))
 				{
-					yy = 2;
+					TotHPV[iy] += 1;
 				}
-				else if (AgeGroup >= 10)
+			}
+			else
+			{
+				TotPop[7 + iy] += 1;
+				if (Indiv::AnyHPV(Register[ic].HPVstage, Register[ic].allhpv, {1}))
 				{
-					yy = 3;
+					TotHPV[7 + iy] += 1;
 				}
-				if (HIVstage == 5 || HIVstage == 6)
+			}
+		}
+	}
+	for (xx = 0; xx < 14; xx++)
+	{
+		MacDprev[CurrSim - 1][xx] = 1.0 * TotHPV[xx] / TotPop[xx];
+	}
+}
+void Pop::SaveMacDprev(const char *filout)
+{
+	int iy, is;
+	ofstream file(filout);
+
+	for (iy = 0; iy < 500; iy++)
+	{
+		for (is = 0; is < 14; is++)
+		{
+			file << right << MacDprev[iy][is] << "	";
+		}
+		file << endl;
+	}
+	file.close();
+}
+
+void Indiv::GetScreened(
+	int ID, double rea, double scr, double ade,
+	double tts, double res, double ttC, double CCd,
+	double SI, double SII, double SIII, double SIV,
+	double SId, double SIId, double SIIId, double SIVd,
+	double acceptRand, double efficacyD1Rand,
+	double efficacyD2Rand, double D2LossRand)
+{
+
+	int xx, yy, zz;
+	// Get age that matches coverage age
+	yy = 0;
+	if (AgeGroup == 6 || AgeGroup == 7)
+	{
+		yy = 1;
+	}
+	else if (AgeGroup == 8 || AgeGroup == 9)
+	{
+		yy = 2;
+	}
+	else if (AgeGroup >= 10)
+	{
+		yy = 3;
+	}
+	if (HIVstage == 5 || HIVstage == 6)
+	{
+		zz = 1;
+	}
+	else
+	{
+		zz = 0;
+	}
+	if (InScreen == 1 && timetoCol == 0)
+	{
+		if (timePassed > timetoScreen && timetoScreen > 0)
+		{
+			if ((CurrYear == 2020 || CurrYear == 2021) && SIVd < 0.3)
+			{	// remember to change rates of
+				// entering screening in
+				// ScreeningByYear.txt
+				if (PerfectSchedule == 0 || CurrYear < ImplementYR)
 				{
-					zz = 1;
-				}
-				else
-				{
-					zz = 0;
-				}
-				if (InScreen == 1 && timetoCol == 0)
-				{
-					if (timePassed > timetoScreen && timetoScreen > 0)
+					if (HIVstage == 5)
 					{
-						if ((CurrYear == 2020 || CurrYear == 2021) && SIVd < 0.3)
-						{	// remember to change rates of
-							// entering screening in
-							// ScreeningByYear.txt
-							if (PerfectSchedule == 0 || CurrYear < ImplementYR)
-							{
-								if (HIVstage == 5)
-								{
-									timetoScreen = 4.5 * pow(-log(tts), (1.0 / 0.71)) * 48;
-								}
-								else
-								{
-									timetoScreen = 9.0 * pow(-log(tts), (1.0 / 0.56)) * 48;
-								}
-								if (timetoScreen == 0)
-								{
-									timetoScreen = 1;
-								}
-							}
-							if (PerfectSchedule == 1 && CurrYear >= ImplementYR)
-							{
-								timetoScreen = 48;
-							}
-							repeat = 0;
-						}
-						if (rea < ScreenReason[zz * 4 + yy][CurrYear - StartYear])
-						{
-							reason = 0;
-						}
-						else
-						{
-							reason = 1;
-						}
-						// timetoScreen=0;
-						if ((InvCaseAlgorithm == 1) && (acceptRand < HPVScaleUpProp[CurrYear - StartYear]))
-						{
-							HPVScreenAlgorithm_InvCase(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII, SIV, SId, SIId, SIIId, SIVd, acceptRand, efficacyD1Rand); // reusing random numbers to save computational time
-						}
-						else if (InvCaseAlgorithm == 1)
-						{
-							ScreenAlgorithm(ID, rea, ade, tts, res, ttC,
-											CCd, SI, SII, SIII, SIV, SId,
-											SIId, SIIId, SIVd, acceptRand,
-											efficacyD1Rand, efficacyD2Rand,
-											D2LossRand);
-						}
-						else if ((HPVDNA == 0 || CurrYear < ImplementYR))
-						{
-							ScreenAlgorithm(ID, rea, ade, tts, res, ttC,
-											CCd, SI, SII, SIII, SIV, SId,
-											SIId, SIIId, SIVd, acceptRand,
-											efficacyD1Rand, efficacyD2Rand,
-											D2LossRand);
-						}
-						else if (HPVDNA == 1 && CurrYear >= ImplementYR && (MnDCampaign == 0))
-						{
-							if ((HIVstage >= 5) || (HIVstage < 5 && AgeExact >= 30.0))
-							{
-								if (HPVDNAThermal == 0)
-								{
-									HPVScreenAlgorithm(
-										ID, rea, ade, tts, res, ttC, CCd, SI,
-										SII, SIII, SIV, SId, SIId, SIIId, SIVd);
-								}
-								else if (HPVDNAThermal == 1)
-								{
-									if (ThermalORPap < PropThermal)
-									{
-										HPV_ThermalScreenAlgorithm(
-											ID, rea, ade, tts, res, ttC, CCd, SI,
-											SII, SIII, SIV, SId, SIId, SIIId,
-											SIVd);
-									}
-									else
-									{
-										ScreenAlgorithm(
-											ID, rea, ade, tts, res, ttC, CCd, SI,
-											SII, SIII, SIV, SId, SIId, SIIId,
-											SIVd, acceptRand, efficacyD1Rand,
-											efficacyD2Rand, D2LossRand);
-									}
-								}
-							}
-						}
-						else if (HPVDNA == 1 && CurrYear >= ImplementYR && (MnDCampaign == 1))
-						{
-							if ((HIVstage >= 5) || (HIVstage < 5 && AgeExact >= 30.0))
-							{
-								MnDScreenAlgorithm(
-									ID, rea, ade, tts, res, ttC, CCd, SI, SII,
-									SIII, SIV, SId, SIId, SIIId, SIVd,
-									acceptRand, efficacyD1Rand,
-									efficacyD2Rand, D2LossRand);
-							}
-							else
-							{
-								ScreenAlgorithm(ID, rea, ade, tts, res, ttC,
-												CCd, SI, SII, SIII, SIV, SId,
-												SIId, SIIId, SIVd, acceptRand,
-												efficacyD1Rand,
-												efficacyD2Rand, D2LossRand);
-							}
-						}
-						timePassed = 0;
+						timetoScreen = 4.5 * pow(-log(tts), (1.0 / 0.71)) * 48;
 					}
 					else
 					{
-						timePassed += 1;
-						ScreenCount += 1;
+						timetoScreen = 9.0 * pow(-log(tts), (1.0 / 0.56)) * 48;
+					}
+					if (timetoScreen == 0)
+					{
+						timetoScreen = 1;
 					}
 				}
-				if (InScreen == 0 &&
-					(HIVstage > 0 ||
-					 (HIVstage == 0 && AgeGroup > 3)))
+				if (PerfectSchedule == 1 && CurrYear >= ImplementYR)
 				{
-					if (scr < ScreenProb[zz * 4 + yy][CurrYear - StartYear] / 48.0)
+					timetoScreen = 48;
+				}
+				repeat = 0;
+			}
+			if (rea < ScreenReason[zz * 4 + yy][CurrYear - StartYear])
+			{
+				reason = 0;
+			}
+			else
+			{
+				reason = 1;
+			}
+			// timetoScreen=0;
+			if (InvCaseAlgorithm == 1){ 
+				if(acceptRand < HPVScaleUpProp[CurrYear - StartYear])
+				{
+				HPVScreenAlgorithm_InvCase(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII, SIV, SId, SIId, SIIId, SIVd, acceptRand, efficacyD1Rand); // reusing random numbers to save computational time
+				}
+				else 
+				{
+					ScreenAlgorithm(ID, rea, ade, tts, res, ttC,
+									CCd, SI, SII, SIII, SIV, SId,
+									SIId, SIIId, SIVd, acceptRand,
+									efficacyD1Rand, efficacyD2Rand,
+									D2LossRand);
+				}
+			}
+			else if ((HPVDNA == 0 || CurrYear < ImplementYR))
+			{
+				ScreenAlgorithm(ID, rea, ade, tts, res, ttC,
+								CCd, SI, SII, SIII, SIV, SId,
+								SIId, SIIId, SIVd, acceptRand,
+								efficacyD1Rand, efficacyD2Rand,
+								D2LossRand);
+			}
+			else if (HPVDNA == 1 && CurrYear >= ImplementYR && (MnDCampaign == 0))
+			{
+				if ((HIVstage >= 5) || (HIVstage < 5 && AgeExact >= 30.0))
+				{
+					if (HPVDNAThermal == 0)
 					{
-						if (rea < ScreenReason[zz * 4 + yy][CurrYear - StartYear])
+						HPVScreenAlgorithm(
+							ID, rea, ade, tts, res, ttC, CCd, SI,
+							SII, SIII, SIV, SId, SIId, SIIId, SIVd);
+					}
+					else if (HPVDNAThermal == 1)
+					{
+						if (ThermalORPap < PropThermal)
 						{
-							reason = 0;
+							HPV_ThermalScreenAlgorithm(
+								ID, rea, ade, tts, res, ttC, CCd, SI,
+								SII, SIII, SIV, SId, SIId, SIIId,
+								SIVd);
 						}
 						else
 						{
-							reason = 1;
+							ScreenAlgorithm(
+								ID, rea, ade, tts, res, ttC, CCd, SI,
+								SII, SIII, SIV, SId, SIId, SIIId,
+								SIVd, acceptRand, efficacyD1Rand,
+								efficacyD2Rand, D2LossRand);
 						}
-						// timetoScreen=0;
-						if ((InvCaseAlgorithm == 1) && (acceptRand < HPVScaleUpProp[CurrYear - StartYear]))
-						{
-							HPVScreenAlgorithm_InvCase(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII, SIV, SId, SIId, SIIId, SIVd, acceptRand, efficacyD1Rand);
-						}
-						else if (InvCaseAlgorithm == 1)
-						{
-							ScreenAlgorithm(ID, rea, ade, tts, res, ttC,
-											CCd, SI, SII, SIII, SIV, SId,
-											SIId, SIIId, SIVd, acceptRand,
-											efficacyD1Rand, efficacyD2Rand,
-											D2LossRand);
-						}
-						
-						else if ((HPVDNA == 0 || CurrYear < ImplementYR))
-						{
-							ScreenAlgorithm(ID, rea, ade, tts, res, ttC,
-											CCd, SI, SII, SIII, SIV, SId,
-											SIId, SIIId, SIVd, acceptRand,
-											efficacyD1Rand, efficacyD2Rand,
-											D2LossRand);
-						}
-						
-						else if ((HPVDNA == 1 && CurrYear >= ImplementYR) && (MnDCampaign == 0))
-						{
-							if ((HIVstage >= 5) || (HIVstage < 5 && AgeExact >= 30.0))
-							{
-								if (HPVDNAThermal == 0)
-								{
-									HPVScreenAlgorithm(
-										ID, rea, ade, tts, res, ttC, CCd, SI,
-										SII, SIII, SIV, SId, SIId, SIIId, SIVd);
-								}
-								else if (HPVDNAThermal == 1)
-								{
-									if (ThermalORPap < PropThermal)
-									{
-										HPV_ThermalScreenAlgorithm(
-											ID, rea, ade, tts, res, ttC, CCd, SI,
-											SII, SIII, SIV, SId, SIId, SIIId,
-											SIVd);
-									}
-									else
-									{
-										ScreenAlgorithm(
-											ID, rea, ade, tts, res, ttC, CCd, SI,
-											SII, SIII, SIV, SId, SIId, SIIId,
-											SIVd, acceptRand, efficacyD1Rand,
-											efficacyD2Rand, D2LossRand);
-									}
-								}
-							}
-						}
-						else if ((HPVDNA == 1 && CurrYear >= ImplementYR) && (MnDCampaign == 1))
-						{
-							if ((HIVstage >= 5) || (HIVstage < 5 && AgeExact >= 30.0))
-							{
-								MnDScreenAlgorithm(
-									ID, rea, ade, tts, res, ttC, CCd, SI, SII,
-									SIII, SIV, SId, SIId, SIIId, SIVd,
-									acceptRand, efficacyD1Rand,
-									efficacyD2Rand, D2LossRand);
-							}
-							else
-							{
-								ScreenAlgorithm(ID, rea, ade, tts, res, ttC,
-												CCd, SI, SII, SIII, SIV, SId,
-												SIId, SIIId, SIVd, acceptRand,
-												efficacyD1Rand, efficacyD2Rand,
-												D2LossRand);
-							}
-						}
-						InScreen = 1;
-						timePassed = 0;
 					}
 				}
 			}
+			else if (HPVDNA == 1 && CurrYear >= ImplementYR && (MnDCampaign == 1))
+			{
+				if ((HIVstage >= 5) || (HIVstage < 5 && AgeExact >= 30.0))
+				{
+					MnDScreenAlgorithm(
+						ID, rea, ade, tts, res, ttC, CCd, SI, SII,
+						SIII, SIV, SId, SIId, SIIId, SIVd,
+						acceptRand, efficacyD1Rand,
+						efficacyD2Rand, D2LossRand);
+				}
+				else
+				{
+					ScreenAlgorithm(ID, rea, ade, tts, res, ttC,
+									CCd, SI, SII, SIII, SIV, SId,
+									SIId, SIIId, SIVd, acceptRand,
+									efficacyD1Rand,
+									efficacyD2Rand, D2LossRand);
+				}
+			}
+			timePassed = 0;
+		}
+		else
+		{
+			timePassed += 1;
+			ScreenCount += 1;
+		}
+	}
+	if (InScreen == 0 &&
+		(HIVstage > 0 ||
+		(HIVstage == 0 && AgeGroup > 3)))
+	{
+		if (scr < ScreenProb[zz * 4 + yy][CurrYear - StartYear] / 48.0)
+		{
+			if (rea < ScreenReason[zz * 4 + yy][CurrYear - StartYear])
+			{
+				reason = 0;
+			}
+			else
+			{
+				reason = 1;
+			}
+			// timetoScreen=0;
+			if (InvCaseAlgorithm == 1){ 
+				if(acceptRand < HPVScaleUpProp[CurrYear - StartYear])
+				{
+					HPVScreenAlgorithm_InvCase(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII, SIV, SId, SIId, SIIId, SIVd, acceptRand, efficacyD1Rand);
+				}
+				else if (InvCaseAlgorithm == 1)
+				{
+					ScreenAlgorithm(ID, rea, ade, tts, res, ttC,
+									CCd, SI, SII, SIII, SIV, SId,
+									SIId, SIIId, SIVd, acceptRand,
+									efficacyD1Rand, efficacyD2Rand,
+									D2LossRand);
+				}
+			}
+			else if ((HPVDNA == 0 || CurrYear < ImplementYR))
+			{
+				ScreenAlgorithm(ID, rea, ade, tts, res, ttC,
+								CCd, SI, SII, SIII, SIV, SId,
+								SIId, SIIId, SIVd, acceptRand,
+								efficacyD1Rand, efficacyD2Rand,
+								D2LossRand);
+			}
+			
+			else if ((HPVDNA == 1 && CurrYear >= ImplementYR) && (MnDCampaign == 0))
+			{
+				if ((HIVstage >= 5) || (HIVstage < 5 && AgeExact >= 30.0))
+				{
+					if (HPVDNAThermal == 0)
+					{
+						HPVScreenAlgorithm(
+							ID, rea, ade, tts, res, ttC, CCd, SI,
+							SII, SIII, SIV, SId, SIId, SIIId, SIVd);
+					}
+					else if (HPVDNAThermal == 1)
+					{
+						if (ThermalORPap < PropThermal)
+						{
+							HPV_ThermalScreenAlgorithm(
+								ID, rea, ade, tts, res, ttC, CCd, SI,
+								SII, SIII, SIV, SId, SIId, SIIId,
+								SIVd);
+						}
+						else
+						{
+							ScreenAlgorithm(
+								ID, rea, ade, tts, res, ttC, CCd, SI,
+								SII, SIII, SIV, SId, SIId, SIIId,
+								SIVd, acceptRand, efficacyD1Rand,
+								efficacyD2Rand, D2LossRand);
+						}
+					}
+				}
+			}
+			else if ((HPVDNA == 1 && CurrYear >= ImplementYR) && (MnDCampaign == 1))
+			{
+				if ((HIVstage >= 5) || (HIVstage < 5 && AgeExact >= 30.0))
+				{
+					MnDScreenAlgorithm(
+						ID, rea, ade, tts, res, ttC, CCd, SI, SII,
+						SIII, SIV, SId, SIId, SIIId, SIVd,
+						acceptRand, efficacyD1Rand,
+						efficacyD2Rand, D2LossRand);
+				}
+				else
+				{
+					ScreenAlgorithm(ID, rea, ade, tts, res, ttC,
+									CCd, SI, SII, SIII, SIV, SId,
+									SIId, SIIId, SIVd, acceptRand,
+									efficacyD1Rand, efficacyD2Rand,
+									D2LossRand);
+				}
+			}
+			InScreen = 1;
+			timePassed = 0;
+		}
+	}
+}
 
 void Indiv::AdministerTherapeuticVaccine(int ID, double acceptRand, double efficacyD1Rand, double efficacyD2Rand, double D2LossRand)
 {
@@ -14456,7 +14459,7 @@ void Indiv::HPVScreenAlgorithm_InvCase(
 
 	RSApop.NewHPVScreen[zz * 18 + AgeGroup][CurrYear - StartYear] += 1;
 
-	if (ade < 0.95)
+	if (ade < 0.95) //Only 1.2% were registered at lab but did not have result. Perhaps safe to keep as 5%. 
 	{
 		if (HPVstatus == 0)
 		{ // HPV negative
@@ -14508,23 +14511,28 @@ void Indiv::HPVScreenAlgorithm_InvCase(
 				{
 
 					// HPV 16/18/45 positive (not cancer stages 3/4)
+					// KIM FIX: we have to be careful with the stages 1 and 2 though. 
+					//Is there a mechanism for cancer diagnosis that is not just through screening???????
 					if (AnyHPV(HPVstage, hpv161845, {1, 2, 3, 4}) && TrueStage < 4)
 					{
 
 						// Thermal Ablation scale-up
-						double TA_coverage = 0.0;
+						double TA_coverage = 0.0; //KIM FIX: I think this and next two could be defined at the top of function, because used again?
 						int iy = CurrYear - StartYear;
 						TA_coverage = TAScaleUpRate[iy];
 						if (taRand < TA_coverage)
 						{
 							// Full pathway: VIA -- Thermal Ablation
+							//KIM FIX: I think here we add the rea < 0.9 (can't assume all will go back for treatment, but because
+							//it is at PHC, we can assume high prop)
 							RSApop.NewVAT[zz * 18 + AgeGroup][CurrYear - StartYear] += 1;
 
 							if (viaVis < 0.95){ // 0.95 assummed based suitability for TA ** double check **
+								//KIM FIX you need a else for the viaVis remaining 5% (which is AttendColposcopy probs...)
 							if((TrueStage ==0 || TrueStage == 1)){ 
-							 // no visible lesion -- Thermal Ablation
+							 // no visible lesion -- Thermal Ablation (assume that CIN2+ will have visible lesion)
 
-								GetTreatment.out[AgeGroup][CurrYear - StartYear] += 1;
+								GetTreatment.out[AgeGroup][CurrYear - StartYear] += 1; //KIM FIX: I think GetTreatment is only for LLETZ, and NewThermal is for TA.
 								if (TrueStage == 0)
 								{
 									RSApop.NewUnnecessary[zz * 18 + AgeGroup][CurrYear - StartYear] += 1;
@@ -14635,6 +14643,7 @@ void Indiv::HPVScreenAlgorithm_InvCase(
 
 							else
 							{ // lesion seen -- Colposcopy + LLETZ
+								//KIM FIX use AttendColposcopy probs
 								RSApop.GetReferred[zz * 18 + AgeGroup][CurrYear - StartYear] += 1;
 								RSApop.NewLLETZ[zz * 18 + AgeGroup][CurrYear - StartYear] += 1;
 								GetTreatment.out[AgeGroup][CurrYear - StartYear] += 1;
@@ -14783,6 +14792,7 @@ void Indiv::HPVScreenAlgorithm_InvCase(
 						else
 						{
 							// Scale-up not active -- skip VIA, go straight to Colposcopy + LLETZ
+							//KIM FIX: apply AttendColposcopy probs, treatment only happens in GetTreated()
 							RSApop.GetReferred[zz * 18 + AgeGroup][CurrYear - StartYear] += 1;
 							RSApop.NewLLETZ[zz * 18 + AgeGroup][CurrYear - StartYear] += 1;
 							GetTreatment.out[AgeGroup][CurrYear - StartYear] += 1;
@@ -15110,8 +15120,10 @@ void Indiv::HPVScreenAlgorithm_InvCase(
 						}
 
 						// Cancer picked up by cytology
-						if (TrueStage == 3 && ScreenResult == 2 && CCd < 0.35)
+						if ((TrueStage == 3 ||TrueStage == 6) && ScreenResult == 2 && CCd < 0.35) 
 						{
+						//KIM FIX: Reflex cyto probs also more likely to pick up cancer?
+						
 							DiagnosedCC = 1;
 							RSApop.NewDiagCancer[zz * 18 + AgeGroup][CurrYear - StartYear] += 1;
 							if (HIVstage == 5)
@@ -15211,17 +15223,15 @@ void Indiv::HPVScreenAlgorithm_InvCase(
 
 							double TA_coverage = 0.0;
 							int iy = CurrYear - StartYear;
-							if (iy >= 0 && iy < 136)
-							{
-								TA_coverage = TAScaleUpRate[iy];
-							}
+							TA_coverage = TAScaleUpRate[iy];
+							
 
 							if (taRand < TA_coverage)
 							{
 								// Full pathway available -- do VIA
 								RSApop.NewVAT[zz * 18 + AgeGroup][CurrYear - StartYear] += 1;
 
-								if (viaVis < 0.65)
+								if (viaVis < 0.65) //KIM FIX -- not fix, but where is this 0.65 from again?
 								{ // no visible lesion -- Thermal Ablation
 									GetTreatment.out[AgeGroup][CurrYear - StartYear] += 1;
 									if (TrueStage == 0)
@@ -15326,6 +15336,7 @@ void Indiv::HPVScreenAlgorithm_InvCase(
 								else
 								{
 									// Visible lesion -- Colposcopy + LLETZ
+									//KIM FIX: AttendColposcopy
 									RSApop.GetReferred[zz * 18 + AgeGroup][CurrYear - StartYear] += 1;
 									RSApop.NewLLETZ[zz * 18 + AgeGroup][CurrYear - StartYear] += 1;
 									GetTreatment.out[AgeGroup][CurrYear - StartYear] += 1;
@@ -15472,6 +15483,7 @@ void Indiv::HPVScreenAlgorithm_InvCase(
 							else
 							{
 								// Scale-up not active -- skip VIA, go straight to Colposcopy + LLETZ
+								// KIM FIX: AttendColposcopy
 								RSApop.GetReferred[zz * 18 + AgeGroup][CurrYear - StartYear] += 1;
 								RSApop.NewLLETZ[zz * 18 + AgeGroup][CurrYear - StartYear] += 1;
 								GetTreatment.out[AgeGroup][CurrYear - StartYear] += 1;
@@ -15619,6 +15631,7 @@ void Indiv::HPVScreenAlgorithm_InvCase(
 						//  HSIL / ASC-H --  Colposcopy + LLETZ 
 						else if (ScreenResult == 2 && TrueStage < 3)
 						{
+							//KIM FIX: AttendColposcopy
 							RSApop.GetReferred[zz * 18 + AgeGroup][CurrYear - StartYear] += 1;
 							RSApop.NewLLETZ[zz * 18 + AgeGroup][CurrYear - StartYear] += 1;
 							GetTreatment.out[AgeGroup][CurrYear - StartYear] += 1;
@@ -15789,7 +15802,7 @@ void Indiv::HPVScreenAlgorithm_InvCase(
 					}
 					else {
 						// Still HPV positive at 12-month follow-up -- treat immediately
-						// (Colposcopy + LLETZ as per Figure 6)
+						// (Colposcopy + LLETZ as per Figure 6) KIM FIX: apply AttendColposcopy probs, treatment only happens in GetTreated()
 						RSApop.GetReferred[zz * 18 + AgeGroup][CurrYear - StartYear] += 1;
 						RSApop.NewLLETZ[zz * 18 + AgeGroup][CurrYear - StartYear] += 1;
 						GetTreatment.out[AgeGroup][CurrYear - StartYear] += 1;
