@@ -321,6 +321,8 @@ double CurrPostnatal; // Propn of HIV-exposed kids infected postnatally in curre
 double PropinCIN3[15][60]; // prop of women per age group who have been in CIN3 for 0 to 60 years
 double PropVaccinated[136]; //proportion of girls vaccinated in the national programme. Assume constant for now
 int CampaignYear[136]; //Five yearly campaign starting in 2025
+double TAScaleUpRate[136]; //Thermal Ablation scale up rate
+double HPVScaleUpProp[136]; //HPV scale up, province-wise proportions
 double PropVaccinatedWHO; //proportion of girls vaccinated in the national programme. Assume constant for now
 double PropVaccinatedHIV; 
 double VaccEfficacy[13]; //HPV vaccine efficacy for each of 13 types (there is evidence of cross-protection)
@@ -388,6 +390,7 @@ int RoutineScreening;//=1; //switch off screening =0
 int PerfectSchedule;//=0; //If SA's screening schedule is followed to a T
 int HPVDNA;//=1;
 int MnDCampaign;//=1; //HPVDNA should also be 1 if this is 1
+int InvCaseAlgorithm;//=0;
 int HPVDNAThermal;//=1; //HPVDNA should also be 1 if this is 1
 double PropThermal;//=1.0;
 int HPVGenotyping;//=0;
@@ -1240,8 +1243,7 @@ public:
 	
 	//HPV types: 16	18	31	33	35	39	45	51	52	56	58	59	68
 	//vector<int> HPVstage;
-	int HPVstage[13]; // 0 = uninfected, 1 = infected, 2 = CIN1, 3 = CIN2, 4 = CIN3, 5 = CC-I, 6=latent, 7 = immune, 8 = CC-II, 9 = CC-III, 10 = CC-IV, 
-					  // 11 = CC-I symptomatic,  12 = CC-II symptomatic, 13 = CC-III symptomatic, 14 = CC-IV symptomatic, 15 = recovered, 16 = Dead of cancer
+	int HPVstage[13]; // 0 = uninfected, 1 = infected, 2 = CIN1, 3 = CIN2, 4 = CIN3, 5 = CC-I, 6=latent, 7 = immune, 8 = CC-II, 9 = CC-III, 10 = CC-IV,  11 = CC-I symptomatic,  12 = CC-II symptomatic, 13 = CC-III symptomatic, 14 = CC-IV symptomatic, 15 = recovered, 16 = Dead of cancer
 	int HPVstageE[13]; // HPV stage at end of cycle
 	static const vector<int> allhpv;
 	static const vector<int> hpv1618;
@@ -1249,7 +1251,8 @@ public:
 	
 	static const vector<int> lsil;
 	static const vector<int> hsil;
-	static const vector<int> cc_un;
+	static const vector<int> cc_un12;
+	static const vector<int> cc_un34;
 	static const vector<int> cc_diag;
 	static const vector<int> recover;
 
@@ -1283,7 +1286,7 @@ public:
 	int timetoCol; //time of next screen
 	int ScreenResult; //0=Normal; 1=LSIL; 2=HSIL; 3=CC
 	int ColResult; //0=Normal; 1=CIN1; 2=CIN2/3; 3=CC
-	int TrueStage; //0=Normal; 1=LSIL; 2=HSIL; 3=CC; 4=DiagnosedCC; 5=Recovered/Dead
+	int TrueStage; //0=Normal; 1=LSIL; 2=HSIL; 3=CC1/2; 4=DiagnosedCC; 5=Recovered/Dead; 6 = CC3/4
 	int HPVstatus; //0=HPV negative (stages 0, 6, 7); 1=HPV positive
 	int repeat; //0=no; 1=yes
 	int HPVrepeat;
@@ -1362,6 +1365,8 @@ public:
 	void AdministerTherapeuticVaccine(int ID, double acceptRand, double efficacyD1Rand, double efficacyD2Rand, double D2LossRand);
 	void ScreenAlgorithm(int ID, double rea, double ade, double tts, double res, double ttC, double CCd, double SI, double SII, double SIII, double SIV, 
 							double SId, double SIId, double SIIId, double SIVd, double acceptRand, double efficacyD1Rand, double efficacyD2Rand, double D2LossRand);
+	void HPVScreenAlgorithm_InvCase(int ID, double rea, double ade, double tts, double res, double ttC, double CCd, double SI, double SII, double SIII, double SIV, 
+							double SId, double SIId, double SIIId, double SIVd,  double VIAVis, double taRand);
 	void MnDScreenAlgorithm(int ID, double rea, double ade, double tts, double res, double ttC, double CCd, double SI, double SII, double SIII, double SIV, 
 							double SId, double SIId, double SIIId, double SIVd, double acceptRand, double efficacyD1Rand, double efficacyD2Rand, double D2LossRand);
 	void HPVScreenAlgorithm(int ID, double rea, double ade, double tts, double res, double ttC, double CCd, double SI, double SII, double SIII, double SIV, 
