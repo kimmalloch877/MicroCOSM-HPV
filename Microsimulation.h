@@ -19,7 +19,7 @@ int StartYear = 1985; //do not change, ever!
 int CurrYear;
 int BehavCycleCount;
 int STDcycleCount;
-int ProjectionTerm =  96; //max 136// 18 for 2000 to 2002 cohort // 36 for up to 2020
+int ProjectionTerm =  55; //max 136// 18 for 2000 to 2002 cohort // 36 for up to 2020
 const int InitPop = 20000; //do not change, ever!
 const int MaxPop = 110000; //60000; change to 100000; if run to 2100;
 const int MaxCSWs = 500; //200; change to 500; if go to 2100;
@@ -93,7 +93,7 @@ int CycleD = 48; // Number of STD cycles per year (NB: must be integer multiple 
 double r[InitPop], rprisk[InitPop], rpID[InitPop], rSTI[MaxPop][100];
 double r2[MaxPop], revent[MaxPop], rpAge[MaxPop], rpID2[MaxPop], hiv1618[MaxPop],  hivoth[MaxPop], wane[MaxPop], RandAcceptTxV[MaxPop], Rloss[MaxPop], EfficacyD1Rand[MaxPop], EfficacyD2Rand[MaxPop];
 const int ParamCombs = 1; // number of input parameter combinations
-const int IterationsPerPC =1; // number of iterations per parameter combination
+const int IterationsPerPC =20; // number of iterations per parameter combination
 const int samplesize =ParamCombs*IterationsPerPC; // number of simulations (must = ParamCombs * IterationsPerPC)
 int SeedRecord[ParamCombs][2]; // seeds used when FixedUncertainty = 1
 int GetSDfromData = 0; // Set to 1 if you want to calculate the standard deviation in the
@@ -305,6 +305,8 @@ double FSWasympCure; // Prob that treatment for symptomatic STD in FSW cures oth
 					 // STD was symptomatic)
 double InitFSWasympRxRate;
 double InitFSWasympCure; 
+double OneYearReturnHIV;
+double OneYearReturnHIVNEG;
 double InitANCpropnScreened;
 double InitANCpropnTreated;
 double InitHIVprevHigh; // % of high risk group initially HIV-positive (assumed to be asymp)
@@ -1396,8 +1398,16 @@ public:
 	int PopPyramid[54][136];
 	int PopPyramid9[6][136];
 	int PopPyramidMale[54][136];
-	int HPVprevVT[54][136];
-	int HPVprevAll[54][136];
+	int PopPyramidHighRisk[54][136];   
+	int PopPyramidLowRisk[54][136];
+	int HPVprev16LowRisk[54][136];
+	int HPVprev18LowRisk[54][136];
+	int HPVprev45LowRisk[54][136];
+	int HPVprevAllLowRisk[54][136];
+	int HPVprev16HighRisk[54][136];
+	int HPVprev18HighRisk[54][136];
+	int HPVprev45HighRisk[54][136];
+	int HPVprevAllHighRisk[54][136];
 	int CIN2prev[54][136];
 	
 	int PopPyramidAll[18][136];
@@ -1413,8 +1423,10 @@ public:
 	int AdultHPVstageTrendAge[320][208];// 1st index is 16 age groups*20 risk groups; 2nd index is HPV stage in M (0-7) and F (8-15) (16) for each of the 13 types: 16*13=208
 	double MacDprev[500][14];
 	int NewScreen[54][136];
+	int NewRepeatScreen[54][136];
 	int NewReflex[54][136];
 	int NewHPVScreen[54][136];
+	int NewRepeatHPVScreen[54][136];
 	int GetReferred[54][136];
 	int NewColposcopy[54][136];
 	int NewLLETZ[54][136];
@@ -1448,9 +1460,11 @@ public:
 	int StageDiagOnART[4][136];
 	//double ScreenProb[8][136]; //Probability of entering screening  by age (4 categories) + HIV/ART status (neg/noART, ART), over time
 	double ModelCoverage[54][136];
+	double ModelRepeatCoverage[54][136];
 	double ModelReflexCoverage[54][136];
 	double ModelTxVCoverage[54][136];
 	double ModelHPVCoverage[54][136];
+	double ModelHPVRepeatCoverage[54][136];
 	double ModelVaccCoverage[108][136];
 	double ModelColpCoverage[54][136];
 	double ModelLLETZCoverage[54][136];
@@ -1865,6 +1879,8 @@ PostOutputArray HPVprev15to64ARTF(136);
 PostOutputArray HPVprevFHIVneg(136);
 PostOutputArray HPVprevFHIVpos(136);
 PostOutputArray HPVprevF(136);
+PostOutputArray HPVprevFHIVnegHighRisk(136);
+PostOutputArray HPVprevFHIVnegLowRisk(136);
 
 PostOutputArray DiagCCPost2000(2);
 PostOutputArray TrueStageByYear(136);
