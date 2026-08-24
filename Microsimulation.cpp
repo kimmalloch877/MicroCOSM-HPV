@@ -13247,7 +13247,7 @@ void Indiv::ScreenAlgorithm(int ID, double rea,  double ade, double tts, double 
 							repeat = 1;
 						}
 						else {
-							timetoScreen = 200 * 48;     
+							timetoScreen = 200 * 48;     //KIM FIX2: time to normal screen for HIV+
 							repeat = 0;
 						}
 					}
@@ -13258,9 +13258,9 @@ void Indiv::ScreenAlgorithm(int ID, double rea,  double ade, double tts, double 
 						}
 						else {
 							if (AgeExact < 55)
-								timetoScreen = 10 * 48;
+								timetoScreen = 10 * 48; //KIM FIX2: time to normal screen for HIV-
 							else
-								timetoScreen = 200 * 48;
+								timetoScreen = 200 * 48; //KIM FIX2: leave this one
 							repeat = 0;
 						}
 					}
@@ -13749,10 +13749,10 @@ void Indiv::GetTreated(int ID, double res, double trt, double clr, double regr, 
 		
 		timetoCol = 0;
 		timePassed = 0;
-		
+		//KIM FIXES2: For all of the below, we follow the return one year logic. I had it as normal when colresult=0, but I think it must be 1 year regardless of col result.
 		if (ColResult == 1 && TrueStage<3){
 			if((WHOScreening==0 && PerfectSchedule==0)||CurrYear<ImplementYR){
-					if(HIVstage==5) {timetoScreen = 4.5 * pow(-log(tts),(1.0/0.71)) * 48;}
+					if(HIVstage==5) {timetoScreen = 4.5 * pow(-log(tts),(1.0/0.71)) * 48;} 
 					else  { timetoScreen = 9.0 * pow(-log(tts),(1.0/0.56)) * 48; }
 					if(timetoScreen==0) {timetoScreen=1;}
 			}
@@ -13764,19 +13764,19 @@ void Indiv::GetTreated(int ID, double res, double trt, double clr, double regr, 
 			if((WHOScreening==0 &&  PerfectSchedule==0)||CurrYear<ImplementYR){
 				//if (HIVstage == 5){timetoScreen = 5.3 * pow(-log(tts), (1.0 / 0.78)) * 48;}
 				//else if(AgeExact<50) { timetoScreen = 15.0 * pow(-log(tts),(1.0/0.83)) * 48; }
-				if (HIVstage == 5){timetoScreen = 7.9 * pow(-log(tts), (1.0 /1.0)) * 48;}
+				if (HIVstage == 5){timetoScreen = 7.9 * pow(-log(tts), (1.0 /1.0)) * 48;} 
 				else if(AgeExact<50) { timetoScreen = 15.0 * pow(-log(tts),(1.0/1.0)) * 48; }
 				else { timetoScreen = 200 * 48; }
 				
 				if (timetoScreen == 0) {timetoScreen = 1;}
 			}
 			if(PerfectSchedule==1 && CurrYear>=ImplementYR){
-				if (HIVstage == 5){timetoScreen = 3 * 48;}
+				if (HIVstage == 5){timetoScreen = 3 * 48;} //
 				else if(AgeExact<50) { timetoScreen = 10 * 48; }
 				else { timetoScreen = 200 * 48; }
 			}
 		}
-		repeat = 0;
+		//repeat = 0; //KIM FIXES2: I don't know why I had repeat=0 here, but should be deleted. 'repeat' should be part of return one year logic
 	}
 	else { 	timePassed += 1;}
 }
@@ -14198,7 +14198,7 @@ void Indiv::MnDScreenAlgorithm(int ID, double rea, double ade, double tts,
         // pow(-log(tts),(1.0/0.83)) * 48; }
         if (HIVstage == 5) {
 			timetoScreen = 6.249259 * pow(-log(tts), (1.0 / 1.279027)) * 48;
-		} else if (AgeExact < 50) {
+		} else if (AgeExact < 50) { 
 			timetoScreen = 23.4422 * pow(-log(tts), (1.0 / 0.993 )) * 48;
 		} else {
           timetoScreen = 200 * 48;
@@ -14209,7 +14209,7 @@ void Indiv::MnDScreenAlgorithm(int ID, double rea, double ade, double tts,
       }
       if (PerfectSchedule == 1 && CurrYear >= ImplementYR) {
         if (HIVstage == 5) {
-          timetoScreen = 3 * 48;
+          timetoScreen = 3 * 48; 
         } else if (AgeExact < 50) {
           timetoScreen = 10 * 48;
         } else {
@@ -14884,7 +14884,7 @@ void Indiv::HPVScreenAlgorithm_InvCase(
 									if (ttC < AttendColposcopy[2][CurrYear - StartYear]) {
 									  timetoCol = 24;
 									  timetoScreen = 0;
-									} else {
+									} else { //KIM FIX2: discuss
 									  timetoCol = 0;
 									  if (PerfectSchedule == 0 || CurrYear < ImplementYR) {
 										// timetoScreen = 5.3 * pow(-log(tts),(1.0/0.78)) * 48;
@@ -14937,7 +14937,7 @@ void Indiv::HPVScreenAlgorithm_InvCase(
 								// Did not return for VIA / treatment -- resume normal long interval
 								if ((WHOScreening == 0 && PerfectSchedule == 0) || CurrYear < ImplementYR) {
 									if (HIVstage == 5) {
-										timetoScreen = 7.9 * pow(-log(tts), (1.0 / 1.0)) * 48;
+										timetoScreen = 7.9 * pow(-log(tts), (1.0 / 1.0)) * 48; //KIM FIX2: Should be new numbers
 									} else if (AgeExact < 55) {
 										timetoScreen = 15.0 * pow(-log(tts), (1.0 / 1.0)) * 48;
 									} else {
@@ -14969,7 +14969,7 @@ void Indiv::HPVScreenAlgorithm_InvCase(
 								if (ttC < AttendColposcopy[2][CurrYear - StartYear]) {
 								  timetoCol = 24;
 								  timetoScreen = 0;
-								} else {
+								} else { //KIM FIX2: discuss
 								  timetoCol = 0;
 								  if (PerfectSchedule == 0 || CurrYear < ImplementYR) {
 									// timetoScreen = 5.3 * pow(-log(tts),(1.0/0.78)) * 48;
@@ -15269,7 +15269,7 @@ void Indiv::HPVScreenAlgorithm_InvCase(
 							}
 						}
 						// ----- Cytology Normal -- HPV follow-up at 12 months -----
-						else if (ScreenResult == 0)
+						else if (ScreenResult == 0) //KIM FIX2: If you minimise here, you'll see that "else if (ScreenResult == 1)" sits completely within this else...
 						{
 							if (PerfectSchedule == 1 && CurrYear >= ImplementYR) {
 								timetoScreen = 48;
@@ -15284,7 +15284,7 @@ void Indiv::HPVScreenAlgorithm_InvCase(
 										HPVrepeat = 1;
 									}
 									else {
-										timetoScreen = 200 * 48;      
+										timetoScreen = 200 * 48;     //KIM FIX2: This doesn't look right 
 										repeat = 0;
 										HPVrepeat = 0;
 									}
@@ -15603,9 +15603,10 @@ void Indiv::HPVScreenAlgorithm_InvCase(
 					HPVrepeat = 0;
 					repeat = 0;
 					if (HPVstatus == 0) { // KIM, FIX or CARI check these must actually be *5* year return rates...
+						//KIM FIX2: I don't think HPVstatus can be 0, this whole thing sits in a else that's by definition HPVstatus != 0
 						// HPV negative -- return to normal long interval
 						if (PerfectSchedule == 1 && CurrYear >= ImplementYR) {
-							timetoScreen = 5 * 48;
+							timetoScreen = 5 * 48; 
 							}else 
 							if (HIVstage == 5) {
 								timetoScreen = 6.249259 * pow(-log(tts), (1.0 / 1.279027)) * 48;
@@ -15625,8 +15626,8 @@ void Indiv::HPVScreenAlgorithm_InvCase(
 								timetoScreen = 0;
 							} else {
 								timetoCol = 0;
-								if (PerfectSchedule == 0 || CurrYear < ImplementYR) {
-									timetoScreen = 7.9 * pow(-log(tts), (1.0 / 1.0)) * 48;
+								if (PerfectSchedule == 0 || CurrYear < ImplementYR) { //KIM FIX2: what if perfect schedule==1?
+									timetoScreen = 7.9 * pow(-log(tts), (1.0 / 1.0)) * 48; //KIM FIX2: Is this an old rate of return?
 									if (timetoScreen == 0) timetoScreen = 1;
 									repeat = 1;
 									HPVrepeat = 1;
@@ -15664,6 +15665,7 @@ void Indiv::HPVScreenAlgorithm_InvCase(
 						// After referral, schedule another HPV test in 12 months
 						// (only if they did not attend colposcopy; if they did attend,
 						// GetTreated will handle the next interval)
+						//KIM FIX2: Cari is confused here -- discuss
 						if (timetoCol == 0) {
 							if (PerfectSchedule == 1 && CurrYear >= ImplementYR) {
 								timetoScreen = 48;
@@ -15719,36 +15721,36 @@ void Indiv::HPVScreenAlgorithm_InvCase(
 		// 	repeat = 0;
 		// }
 	 }
-	 } else {  // inadequate sample
-    if (tts < 0.1) {
-        // 10% get rescreened in 3 months
-        timetoScreen = 12;
-        if (timetoScreen == 0) {
-            timetoScreen = 1;
-        }
-        repeat = 1;
-		HPVrepeat =1;
-    } else {// 90% return to normal screening 
-        if (PerfectSchedule == 1 && CurrYear >= ImplementYR) {
-            if (HIVstage == 5) {
-                timetoScreen = 5 * 48;
-            } else {
-                timetoScreen = 10 * 48;
-            }
-        } else {
-            if (HIVstage == 5) {
-                timetoScreen = 6.249259 * pow(-log(tts), (1.0 / 1.279027)) * 48;
-            } else {
-                timetoScreen = 23.4422 * pow(-log(tts), (1.0 / 0.993)) * 48;
-            }
-            if (timetoScreen == 0) {
-                timetoScreen = 1;
-            }
-        }
-        repeat = 0;
-        HPVrepeat = 0;
-    }
-}
+	} else {  // inadequate sample
+		if (tts < 0.1) {
+			// 10% get rescreened in 3 months
+			timetoScreen = 12;
+			if (timetoScreen == 0) {
+				timetoScreen = 1;
+			}
+			repeat = 1;
+			HPVrepeat =1;
+		} else {// 90% return to normal screening 
+			if (PerfectSchedule == 1 && CurrYear >= ImplementYR) {
+				if (HIVstage == 5) {
+					timetoScreen = 5 * 48;
+				} else {
+					timetoScreen = 10 * 48;
+				}
+			} else {
+				if (HIVstage == 5) {
+					timetoScreen = 6.249259 * pow(-log(tts), (1.0 / 1.279027)) * 48;
+				} else {
+					timetoScreen = 23.4422 * pow(-log(tts), (1.0 / 0.993)) * 48;
+				}
+				if (timetoScreen == 0) {
+					timetoScreen = 1;
+				}
+			}
+			repeat = 0;
+			HPVrepeat = 0;
+		}
+	}
 }
   void Indiv::HPVScreenAlgorithm(
       int ID, double rea, double ade, double tts, double res, double ttC,
