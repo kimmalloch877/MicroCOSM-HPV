@@ -13747,7 +13747,7 @@ void Indiv::GetTreated(int ID, double res, double trt, double clr, double regr, 
 		timetoCol = 0;
 		timePassed = 0;
 		//KIM FIXES2: For all of the below, we follow the return one year logic. I had it as normal when colresult=0, but I think it must be 1 year regardless of col result.
-
+		// fixed
 		if (PerfectSchedule == 1 && CurrYear >= ImplementYR)
 		{timetoScreen = 48;
 			repeat = 1;
@@ -13762,7 +13762,7 @@ void Indiv::GetTreated(int ID, double res, double trt, double clr, double regr, 
 					HPVrepeat = 1;
 				}
 				else
-				{timetoScreen = 6.249259 * pow(-log(tts), (1.0 / 1.279027)) * 48; // KIM FIX2: Normal returns if not in 1 year -- KIM FIXED
+				{timetoScreen = 6.249259 * pow(-log(tts), (1.0 / 1.279027)) * 48; 
 					repeat = 0;
 					HPVrepeat = 0;
 				}
@@ -17375,24 +17375,42 @@ void Indiv::HPVScreenAlgorithm(
 
       if (AgeExact >= 25.0 && AgeExact < 35.0 && Scr30 == 0) {
         Scr30 = 1;
-		//KIM FIX2: Call inv case algorithm here
+		if(acceptRand < HPVScaleUpProp[CurrYear - StartYear]) {
+			            HPVScreenAlgorithm_InvCase(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII, SIV, SId, SIId, SIIId, SIVd, acceptRand, efficacyD1Rand); 
+					  }
+					   else {
+			            ScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII,
+			                              SIV, SId, SIId, SIIId, SIVd, acceptRand,
+			                              efficacyD1Rand, efficacyD2Rand, D2LossRand);
+			            }
        }
       if (AgeExact >= 35.0 && AgeExact < 45.0 && Scr40 == 0) {
         Scr40 = 1;
-        //KIM FIX2: Call inv case algorithm here
+			if(acceptRand < HPVScaleUpProp[CurrYear - StartYear]) {
+			            HPVScreenAlgorithm_InvCase(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII, SIV, SId, SIId, SIIId, SIVd, acceptRand, efficacyD1Rand); 
+					  }
+					   else {
+			            ScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII,
+			                              SIV, SId, SIId, SIIId, SIVd, acceptRand,
+			                              efficacyD1Rand, efficacyD2Rand, D2LossRand);
+			            }
       }
       if (AgeExact >= 45.0 && AgeExact < 55.0 && Scr50 == 0) {
         Scr50 = 1;
-        //KIM FIX2: Call inv case algorithm here
+			if(acceptRand < HPVScaleUpProp[CurrYear - StartYear]) {
+			            HPVScreenAlgorithm_InvCase(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII, SIV, SId, SIId, SIIId, SIVd, acceptRand, efficacyD1Rand); 
+					  }
+					   else {
+			            ScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII,
+			                              SIV, SId, SIId, SIIId, SIVd, acceptRand,
+			                              efficacyD1Rand, efficacyD2Rand, D2LossRand);
+			            }
       }
     } 
 	
 	else if ((HIVstage == 5 || HIVstage == 6) &&
                scr < WHOcoverage[zz * 4 + yy][CurrYear - StartYear] /
                          (3.0 * 48.0)) {
- 
-
-
 // // example for new alg:
 // 	if (AgeExact >= 25.0 && AgeExact < 28.0 && Scr25 == 0) {
 //         Scr25 = 1;
@@ -17406,316 +17424,148 @@ void Indiv::HPVScreenAlgorithm(
 //                               efficacyD1Rand, efficacyD2Rand, D2LossRand);
 //             }
 //         }
-        
-      
-
-
-
-
-
-      if (AgeExact >= 25.0 && AgeExact < 28.0 && Scr25 == 0) {
-        Scr25 = 1;
-     //   if (HPVDNA == 0 || CurrYear < ImplementYR || AgeExact == 24.0) {
-		if (HPVDNA == 0 || CurrYear < ImplementYR ) {
-          ScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII, SIV,
-                          SId, SIId, SIIId, SIVd, acceptRand, efficacyD1Rand,
-                          efficacyD2Rand, D2LossRand);
-        } else if (AgeExact >= 25.0 && HPVDNA == 1 && CurrYear >= ImplementYR) {
-          if (HPVDNAThermal == 0) {
-            HPVScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII,
-                               SIV, SId, SIId, SIIId, SIVd);
-          } else {
-            if (ThermalORPap < PropThermal) {
-              HPV_ThermalScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI,
-                                         SII, SIII, SIV, SId, SIId, SIIId,
-                                         SIVd);
-            } else {
-              ScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII,
-                              SIV, SId, SIId, SIIId, SIVd, acceptRand,
-                              efficacyD1Rand, efficacyD2Rand, D2LossRand);
-            }
-          }
-        }
-      }
+if (AgeExact >= 25.0 && AgeExact < 28.0 && Scr25 == 0) {
+	Scr25 = 1;
+		if(acceptRand < HPVScaleUpProp[CurrYear - StartYear]) {
+					HPVScreenAlgorithm_InvCase(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII, SIV, SId, SIId, SIIId, SIVd, acceptRand, efficacyD1Rand); 
+				  }
+				   else {
+					ScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII,
+									  SIV, SId, SIId, SIIId, SIVd, acceptRand,
+									  efficacyD1Rand, efficacyD2Rand, D2LossRand);
+					}
+  }
+     
       if (AgeExact >= 28.0 && AgeExact < 31.0 && Scr28 == 0) {
         Scr28 = 1;
-        if (HPVDNA == 0 || CurrYear < ImplementYR) {
-          ScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII, SIV,
-                          SId, SIId, SIIId, SIVd, acceptRand, efficacyD1Rand,
-                          efficacyD2Rand, D2LossRand);
-        } else if (HPVDNA == 1 && CurrYear >= ImplementYR) {
-          if (HPVDNAThermal == 0) {
-            HPVScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII,
-                               SIV, SId, SIId, SIIId, SIVd);
-          } else {
-            if (ThermalORPap < PropThermal) {
-              HPV_ThermalScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI,
-                                         SII, SIII, SIV, SId, SIId, SIIId,
-                                         SIVd);
-            } else {
-              ScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII,
-                              SIV, SId, SIId, SIIId, SIVd, acceptRand,
-                              efficacyD1Rand, efficacyD2Rand, D2LossRand);
-            }
-          }
-        }
+			if(acceptRand < HPVScaleUpProp[CurrYear - StartYear]) {
+						HPVScreenAlgorithm_InvCase(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII, SIV, SId, SIId, SIIId, SIVd, acceptRand, efficacyD1Rand); 
+					  }
+					   else {
+						ScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII,
+										  SIV, SId, SIId, SIIId, SIVd, acceptRand,
+										  efficacyD1Rand, efficacyD2Rand, D2LossRand);
+						}
       }
       if (AgeExact >= 31.0 && AgeExact < 34.0 && Scr31 == 0) {
         Scr31 = 1;
-        if (HPVDNA == 0 || CurrYear < ImplementYR) {
-          ScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII, SIV,
-                          SId, SIId, SIIId, SIVd, acceptRand, efficacyD1Rand,
-                          efficacyD2Rand, D2LossRand);
-        } else if (HPVDNA == 1 && CurrYear >= ImplementYR) {
-          if (HPVDNAThermal == 0) {
-            HPVScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII,
-                               SIV, SId, SIId, SIIId, SIVd);
-          } else {
-            if (ThermalORPap < PropThermal) {
-              HPV_ThermalScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI,
-                                         SII, SIII, SIV, SId, SIId, SIIId,
-                                         SIVd);
-            } else {
-              ScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII,
-                              SIV, SId, SIId, SIIId, SIVd, acceptRand,
-                              efficacyD1Rand, efficacyD2Rand, D2LossRand);
-            }
-          }
-        }
+			if(acceptRand < HPVScaleUpProp[CurrYear - StartYear]) {
+						HPVScreenAlgorithm_InvCase(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII, SIV, SId, SIId, SIIId, SIVd, acceptRand, efficacyD1Rand); 
+					  }
+					   else {
+						ScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII,
+										  SIV, SId, SIId, SIIId, SIVd, acceptRand,
+										  efficacyD1Rand, efficacyD2Rand, D2LossRand);
+						}
+					}
       }
       if (AgeExact >= 34.0 && AgeExact < 37.0 && Scr34 == 0) {
         Scr34 = 1;
-        if (HPVDNA == 0 || CurrYear < ImplementYR) {
-          ScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII, SIV,
-                          SId, SIId, SIIId, SIVd, acceptRand, efficacyD1Rand,
-                          efficacyD2Rand, D2LossRand);
-        } else if (HPVDNA == 1 && CurrYear >= ImplementYR) {
-          if (HPVDNAThermal == 0) {
-            HPVScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII,
-                               SIV, SId, SIId, SIIId, SIVd);
-          } else {
-            if (ThermalORPap < PropThermal) {
-              HPV_ThermalScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI,
-                                         SII, SIII, SIV, SId, SIId, SIIId,
-                                         SIVd);
-            } else {
-              ScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII,
-                              SIV, SId, SIId, SIIId, SIVd, acceptRand,
-                              efficacyD1Rand, efficacyD2Rand, D2LossRand);
-            }
-          }
-        }
+			if(acceptRand < HPVScaleUpProp[CurrYear - StartYear]) {
+						HPVScreenAlgorithm_InvCase(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII, SIV, SId, SIId, SIIId, SIVd, acceptRand, efficacyD1Rand); 
+					  }
+					   else {
+						ScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII,
+										  SIV, SId, SIId, SIIId, SIVd, acceptRand,
+										  efficacyD1Rand, efficacyD2Rand, D2LossRand);
+						}
       }
       if (AgeExact >= 37.0 && AgeExact < 40.0 && Scr37 == 0) {
         Scr37 = 1;
-        if (HPVDNA == 0 || CurrYear < ImplementYR) {
-          ScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII, SIV,
-                          SId, SIId, SIIId, SIVd, acceptRand, efficacyD1Rand,
-                          efficacyD2Rand, D2LossRand);
-        } else if (HPVDNA == 1 && CurrYear >= ImplementYR) {
-          if (HPVDNAThermal == 0) {
-            HPVScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII,
-                               SIV, SId, SIId, SIIId, SIVd);
-          } else {
-            if (ThermalORPap < PropThermal) {
-              HPV_ThermalScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI,
-                                         SII, SIII, SIV, SId, SIId, SIIId,
-                                         SIVd);
-            } else {
-              ScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII,
-                              SIV, SId, SIId, SIIId, SIVd, acceptRand,
-                              efficacyD1Rand, efficacyD2Rand, D2LossRand);
-            }
-          }
-        }
+			if(acceptRand < HPVScaleUpProp[CurrYear - StartYear]) {
+						HPVScreenAlgorithm_InvCase(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII, SIV, SId, SIId, SIIId, SIVd, acceptRand, efficacyD1Rand); 
+					  }
+					   else {
+						ScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII,
+										  SIV, SId, SIId, SIIId, SIVd, acceptRand,
+										  efficacyD1Rand, efficacyD2Rand, D2LossRand);
+						}
       }
       if (AgeExact >= 40.0 && AgeExact < 43.0 && Scr40 == 0) {
         Scr40 = 1;
-        if (HPVDNA == 0 || CurrYear < ImplementYR) {
-          ScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII, SIV,
-                          SId, SIId, SIIId, SIVd, acceptRand, efficacyD1Rand,
-                          efficacyD2Rand, D2LossRand);
-        } else if (HPVDNA == 1 && CurrYear >= ImplementYR) {
-          if (HPVDNAThermal == 0) {
-            HPVScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII,
-                               SIV, SId, SIId, SIIId, SIVd);
-          } else {
-            if (ThermalORPap < PropThermal) {
-              HPV_ThermalScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI,
-                                         SII, SIII, SIV, SId, SIId, SIIId,
-                                         SIVd);
-            } else {
-              ScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII,
-                              SIV, SId, SIId, SIIId, SIVd, acceptRand,
-                              efficacyD1Rand, efficacyD2Rand, D2LossRand);
-            }
-          }
-        }
+			if(acceptRand < HPVScaleUpProp[CurrYear - StartYear]) {
+						HPVScreenAlgorithm_InvCase(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII, SIV, SId, SIId, SIIId, SIVd, acceptRand, efficacyD1Rand); 
+					  }
+					else {
+						ScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII,
+										  SIV, SId, SIId, SIIId, SIVd, acceptRand,
+										  efficacyD1Rand, efficacyD2Rand, D2LossRand);
+						}
       }
       if (AgeExact >= 43.0 && AgeExact < 46.0 && Scr43 == 0) {
         Scr43 = 1;
-        if (HPVDNA == 0 || CurrYear < ImplementYR) {
-          ScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII, SIV,
-                          SId, SIId, SIIId, SIVd, acceptRand, efficacyD1Rand,
-                          efficacyD2Rand, D2LossRand);
-        } else if (HPVDNA == 1 && CurrYear >= ImplementYR) {
-          if (HPVDNAThermal == 0) {
-            HPVScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII,
-                               SIV, SId, SIId, SIIId, SIVd);
-          } else {
-            if (ThermalORPap < PropThermal) {
-              HPV_ThermalScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI,
-                                         SII, SIII, SIV, SId, SIId, SIIId,
-                                         SIVd);
-            } else {
-              ScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII,
-                              SIV, SId, SIId, SIIId, SIVd, acceptRand,
-                              efficacyD1Rand, efficacyD2Rand, D2LossRand);
-            }
-          }
-        }
+			if(acceptRand < HPVScaleUpProp[CurrYear - StartYear]) {
+						HPVScreenAlgorithm_InvCase(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII, SIV, SId, SIId, SIIId, SIVd, acceptRand, efficacyD1Rand); 
+					  }
+			else {ScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII,
+										  SIV, SId, SIId, SIIId, SIVd, acceptRand,
+										  efficacyD1Rand, efficacyD2Rand, D2LossRand);
+				}
       }
+	  
       if (AgeExact >= 46.0 && AgeExact < 49.0 && Scr46 == 0) {
         Scr46 = 1;
-        if (HPVDNA == 0 || CurrYear < ImplementYR) {
-          ScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII, SIV,
-                          SId, SIId, SIIId, SIVd, acceptRand, efficacyD1Rand,
-                          efficacyD2Rand, D2LossRand);
-        } else if (HPVDNA == 1 && CurrYear >= ImplementYR) {
-          if (HPVDNAThermal == 0) {
-            HPVScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII,
-                               SIV, SId, SIId, SIIId, SIVd);
-          } else {
-            if (ThermalORPap < PropThermal) {
-              HPV_ThermalScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI,
-                                         SII, SIII, SIV, SId, SIId, SIIId,
-                                         SIVd);
-            } else {
-              ScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII,
-                              SIV, SId, SIId, SIIId, SIVd, acceptRand,
-                              efficacyD1Rand, efficacyD2Rand, D2LossRand);
-            }
-          }
-        }
+        if(acceptRand < HPVScaleUpProp[CurrYear - StartYear]) {
+			HPVScreenAlgorithm_InvCase(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII, SIV, SId, SIId, SIIId, SIVd, acceptRand, efficacyD1Rand); 
+		  }
+		else {ScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII,
+							  SIV, SId, SIId, SIIId, SIVd, acceptRand,
+							  efficacyD1Rand, efficacyD2Rand, D2LossRand);
+		}
       }
       if (AgeExact >= 49.0 && AgeExact < 52.0 && Scr49 == 0) {
         Scr49 = 1;
-        if (HPVDNA == 0 || CurrYear < ImplementYR) {
-          ScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII, SIV,
-                          SId, SIId, SIIId, SIVd, acceptRand, efficacyD1Rand,
-                          efficacyD2Rand, D2LossRand);
-        } else if (HPVDNA == 1 && CurrYear >= ImplementYR) {
-          if (HPVDNAThermal == 0) {
-            HPVScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII,
-                               SIV, SId, SIId, SIIId, SIVd);
-          } else {
-            if (ThermalORPap < PropThermal) {
-              HPV_ThermalScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI,
-                                         SII, SIII, SIV, SId, SIId, SIIId,
-                                         SIVd);
-            } else {
-              ScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII,
-                              SIV, SId, SIId, SIIId, SIVd, acceptRand,
-                              efficacyD1Rand, efficacyD2Rand, D2LossRand);
-            }
-          }
-        }
+		if(acceptRand < HPVScaleUpProp[CurrYear - StartYear]) {
+			HPVScreenAlgorithm_InvCase(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII, SIV, SId, SIId, SIIId, SIVd, acceptRand, efficacyD1Rand); 
+		  }
+		else {ScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII,
+							  SIV, SId, SIId, SIIId, SIVd, acceptRand,
+							  efficacyD1Rand, efficacyD2Rand, D2LossRand);
+			}
       }
       if (AgeExact >= 52.0 && AgeExact < 55.0 && Scr52 == 0) {
         Scr52 = 1;
-        if (HPVDNA == 0 || CurrYear < ImplementYR) {
-          ScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII, SIV,
-                          SId, SIId, SIIId, SIVd, acceptRand, efficacyD1Rand,
-                          efficacyD2Rand, D2LossRand);
-        } else if (HPVDNA == 1 && CurrYear >= ImplementYR) {
-          if (HPVDNAThermal == 0) {
-            HPVScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII,
-                               SIV, SId, SIId, SIIId, SIVd);
-          } else {
-            if (ThermalORPap < PropThermal) {
-              HPV_ThermalScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI,
-                                         SII, SIII, SIV, SId, SIId, SIIId,
-                                         SIVd);
-            } else {
-              ScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII,
-                              SIV, SId, SIId, SIIId, SIVd, acceptRand,
-                              efficacyD1Rand, efficacyD2Rand, D2LossRand);
-            }
-          }
+		if(acceptRand < HPVScaleUpProp[CurrYear - StartYear]) {
+			HPVScreenAlgorithm_InvCase(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII, SIV, SId, SIId, SIIId, SIVd, acceptRand, efficacyD1Rand); 
+		  }
+		else {ScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII,
+							  SIV, SId, SIId, SIIId, SIVd, acceptRand,
+							  efficacyD1Rand, efficacyD2Rand, D2LossRand);
+			}
         }
-      }
+        
       if (AgeExact >= 55.0 && AgeExact < 58.0 && Scr55 == 0) {
         Scr55 = 1;
-        if (HPVDNA == 0 || CurrYear < ImplementYR) {
-          ScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII, SIV,
-                          SId, SIId, SIIId, SIVd, acceptRand, efficacyD1Rand,
-                          efficacyD2Rand, D2LossRand);
-        } else if (HPVDNA == 1 && CurrYear >= ImplementYR) {
-          if (HPVDNAThermal == 0) {
-            HPVScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII,
-                               SIV, SId, SIId, SIIId, SIVd);
-          } else {
-            if (ThermalORPap < PropThermal) {
-              HPV_ThermalScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI,
-                                         SII, SIII, SIV, SId, SIId, SIIId,
-                                         SIVd);
-            } else {
-              ScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII,
-                              SIV, SId, SIId, SIIId, SIVd, acceptRand,
-                              efficacyD1Rand, efficacyD2Rand, D2LossRand);
-            }
+		if(acceptRand < HPVScaleUpProp[CurrYear - StartYear]) {
+			HPVScreenAlgorithm_InvCase(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII, SIV, SId, SIId, SIIId, SIVd, acceptRand, efficacyD1Rand); 
+		  }
+		else {ScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII,
+							  SIV, SId, SIId, SIIId, SIVd, acceptRand,
+							  efficacyD1Rand, efficacyD2Rand, D2LossRand);
+	}
           }
-        }
-      }
 	  if (AgeExact >= 58.0 && AgeExact < 61.0 && Scr58 == 0) {
         Scr58 = 1;
-        if (HPVDNA == 0 || CurrYear < ImplementYR) {
-          ScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII, SIV,
-                          SId, SIId, SIIId, SIVd, acceptRand, efficacyD1Rand,
-                          efficacyD2Rand, D2LossRand);
-        } else if (HPVDNA == 1 && CurrYear >= ImplementYR) {
-          if (HPVDNAThermal == 0) {
-            HPVScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII,
-                               SIV, SId, SIId, SIIId, SIVd);
-          } else {
-            if (ThermalORPap < PropThermal) {
-              HPV_ThermalScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI,
-                                         SII, SIII, SIV, SId, SIId, SIIId,
-                                         SIVd);
-            } else {
-              ScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII,
-                              SIV, SId, SIId, SIIId, SIVd, acceptRand,
-                              efficacyD1Rand, efficacyD2Rand, D2LossRand);
-            }
-          }
-        }
+		if(acceptRand < HPVScaleUpProp[CurrYear - StartYear]) {
+			HPVScreenAlgorithm_InvCase(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII, SIV, SId, SIId, SIIId, SIVd, acceptRand, efficacyD1Rand); 
+		  }
+		else {ScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII,
+							  SIV, SId, SIId, SIIId, SIVd, acceptRand,
+							  efficacyD1Rand, efficacyD2Rand, D2LossRand);
+		}
       }
 	  if (AgeExact >= 61.0 && AgeExact < 64.0 && Scr61 == 0) { //capped at 64
         Scr61 = 1;
-        if (HPVDNA == 0 || CurrYear < ImplementYR) {
-          ScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII, SIV,
-                          SId, SIId, SIIId, SIVd, acceptRand, efficacyD1Rand,
-                          efficacyD2Rand, D2LossRand);
-        } else if (HPVDNA == 1 && CurrYear >= ImplementYR) {
-          if (HPVDNAThermal == 0) {
-            HPVScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII,
-                               SIV, SId, SIId, SIIId, SIVd);
-          } else {
-            if (ThermalORPap < PropThermal) {
-              HPV_ThermalScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI,
-                                         SII, SIII, SIV, SId, SIId, SIIId,
-                                         SIVd);
-            } else {
-              ScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII,
-                              SIV, SId, SIId, SIIId, SIVd, acceptRand,
-                              efficacyD1Rand, efficacyD2Rand, D2LossRand);
-            }
-          }
-        }
+		if(acceptRand < HPVScaleUpProp[CurrYear - StartYear]) {
+			HPVScreenAlgorithm_InvCase(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII, SIV, SId, SIId, SIIId, SIVd, acceptRand, efficacyD1Rand); 
+		  }
+		else {ScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII,
+							  SIV, SId, SIId, SIIId, SIVd, acceptRand,
+							  efficacyD1Rand, efficacyD2Rand, D2LossRand);
+		}
       }
-	 
     }
-  }
+  
   void Pop::SaveCancerDeaths(const char *filout) {
     int ia, is;
     ostringstream s;
