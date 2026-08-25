@@ -1369,6 +1369,8 @@ public:
 							double SId, double SIId, double SIIId, double SIVd, double acceptRand, double efficacyD1Rand, double efficacyD2Rand, double D2LossRand);
 	void HPVScreenAlgorithm_InvCase(int ID, double rea, double ade, double tts, double res, double ttC, double CCd, double SI, double SII, double SIII, double SIV, 
 							double SId, double SIId, double SIIId, double SIVd,  double VIAVis, double taRand);
+	void ReferToColp(int ID, double rea, double ade, double tts, double res, double ttC, double CCd, double SI, double SII, double SIII, double SIV, 
+							double SId, double SIId, double SIIId, double SIVd,  double VIAVis, double taRand);
 	void MnDScreenAlgorithm(int ID, double rea, double ade, double tts, double res, double ttC, double CCd, double SI, double SII, double SIII, double SIV, 
 							double SId, double SIId, double SIIId, double SIVd, double acceptRand, double efficacyD1Rand, double efficacyD2Rand, double D2LossRand);
 	void HPVScreenAlgorithm(int ID, double rea, double ade, double tts, double res, double ttC, double CCd, double SI, double SII, double SIII, double SIV, 
