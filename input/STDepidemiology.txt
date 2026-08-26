@@ -208,5 +208,5 @@ Therapeutic Vaccine efficacy for CIN 2+  (dose 2)
 0.50	0.50	0.25	0.25	0.00	0.00	0.25	0.00	0.00	0.00	0.00	0.00	0.00
 Parameters in this model are the posterior MEANS for the STI parameters and the
 averages of the 100 HIV parameter combinations providing best fit to the HIV data.
-Probability of returning after scheduled for follow up in 1 year. HIVpos, HIVneg
+Probability of returning after scheduled for follow up in 1 year. HIVpos, HIVneg (Other: 0.1325  0.0506, WC: 0.2221   0.1579 )
 0.1325  0.0506

@@ -6989,7 +6989,7 @@ void Pop::GetSTDtransitions()
 			//	if (VCind == 1){ VCtransitionF.GetNewStage(ic + 1, rSTI[ic][7]); }
 			//}
 		}
-		if (RoutineScreening==1 && CurrYear>1999 && HPVind == 1 && Register[ic].AliveInd == 1 && Register[ic].AgeGroup >= 3 && Register[ic].AgeGroup < 12 && 
+		if (RoutineScreening==1 && CurrYear>1999 && HPVind == 1 && Register[ic].AliveInd == 1 && Register[ic].AgeGroup >= 3 && Register[ic].AgeGroup < 13 && 
 			Register[ic].SexInd == 1 && Register[ic].DiagnosedCC == 0){
 			if (WHOScreening==0 && PerfectSchedule==0 ){
 				Register[ic].GetScreened(ic + 1, rSTI[ic][25], rSTI[ic][26], rSTI[ic][27], rSTI[ic][28], rSTI[ic][29], rSTI[ic][30], 
@@ -17283,27 +17283,27 @@ void Indiv::HPVScreenAlgorithm(
       zz = 0;
     }
 
-    if ((timetoScreen > 0 && timetoScreen < 96) &&
-        timetoCol == 0) { // give it two years for those who were already
-                          // scheduled for a screen to be screened
-      if (timePassed > timetoScreen) {
-        timetoScreen = 0;
-  		if(acceptRand < HPVScaleUpProp[CurrYear - StartYear]) {
-			HPVScreenAlgorithm_InvCase(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII, SIV, SId, SIId, SIIId, SIVd, acceptRand, efficacyD1Rand); 
-		}
-		else {
-		ScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII,
-							SIV, SId, SIId, SIIId, SIVd, acceptRand,
-							efficacyD1Rand, efficacyD2Rand, D2LossRand);
-		}
-        timePassed = 0;
-      } else {
-        timePassed += 1;
-        ScreenCount += 1;
-      }
-    }
+    // if ((timetoScreen > 0 && timetoScreen < 96) &&
+    //     timetoCol == 0) { // give it two years for those who were already
+    //                       // scheduled for a screen to be screened
+    //   if (timePassed > timetoScreen) {
+    //     timetoScreen = 0;
+  	// 	if(acceptRand < HPVScaleUpProp[CurrYear - StartYear]) {
+	// 		HPVScreenAlgorithm_InvCase(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII, SIV, SId, SIId, SIIId, SIVd, acceptRand, efficacyD1Rand); 
+	// 	}
+	// 	else {
+	// 	ScreenAlgorithm(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII,
+	// 						SIV, SId, SIId, SIIId, SIVd, acceptRand,
+	// 						efficacyD1Rand, efficacyD2Rand, D2LossRand);
+	// 	}
+    //     timePassed = 0;
+    //   } else {
+    //     timePassed += 1;
+    //     ScreenCount += 1;
+    //   }
+    // }
 
-    else if (HIVstage < 5 &&
+    if (HIVstage < 5 &&
              scr < WHOcoverage[zz * 4 + yy][CurrYear - StartYear] /
                        (48.0 * 10.0)) { // otherwise, schedule screens
 
@@ -17379,7 +17379,6 @@ void Indiv::HPVScreenAlgorithm(
 										  efficacyD1Rand, efficacyD2Rand, D2LossRand);
 						}
 					}
-      }
       if (AgeExact >= 34.0 && AgeExact < 37.0 && Scr34 == 0) {
         Scr34 = 1;
 			if(acceptRand < HPVScaleUpProp[CurrYear - StartYear]) {
@@ -17486,6 +17485,7 @@ void Indiv::HPVScreenAlgorithm(
 		}
       }
     }
+}
   
   void Pop::SaveCancerDeaths(const char *filout) {
     int ia, is;

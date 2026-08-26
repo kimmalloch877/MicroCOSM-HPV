@@ -93,7 +93,7 @@ int CycleD = 48; // Number of STD cycles per year (NB: must be integer multiple 
 double r[InitPop], rprisk[InitPop], rpID[InitPop], rSTI[MaxPop][100];
 double r2[MaxPop], revent[MaxPop], rpAge[MaxPop], rpID2[MaxPop], hiv1618[MaxPop],  hivoth[MaxPop], wane[MaxPop], RandAcceptTxV[MaxPop], Rloss[MaxPop], EfficacyD1Rand[MaxPop], EfficacyD2Rand[MaxPop];
 const int ParamCombs = 1; // number of input parameter combinations
-const int IterationsPerPC =20; // number of iterations per parameter combination
+const int IterationsPerPC =15; // number of iterations per parameter combination
 const int samplesize =ParamCombs*IterationsPerPC; // number of simulations (must = ParamCombs * IterationsPerPC)
 int SeedRecord[ParamCombs][2]; // seeds used when FixedUncertainty = 1
 int GetSDfromData = 0; // Set to 1 if you want to calculate the standard deviation in the
