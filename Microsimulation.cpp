@@ -13034,7 +13034,6 @@ void Indiv::ScreenAlgorithm(int ID, double rea,  double ade, double tts, double 
 	PrevResult = ScreenResult;
 	//ofstream file("adequate.txt", std::ios::app);
 	//file << CurrYear << " " << AgeExact << " " << HIVstage << " " << InScreen << " "<< timetoScreen  << endl;
-	timetoScreen=0;
 	//file.close();
 	int SimCount2 = (CurrSim - 1)/IterationsPerPC;
 	yy = 0;
@@ -13074,8 +13073,9 @@ void Indiv::ScreenAlgorithm(int ID, double rea,  double ade, double tts, double 
 	//if(HIVstage>=5 &&  ScreenCount>=3*48){ScreenCount=0;}
 	//when using the dumb coverage estimate:
 
-	if(repeat==0 ){RSApop.NewScreen[zz*18 + AgeGroup][CurrYear-StartYear] += 1;}
+	if(repeat==0 && timetoScreen>48 ){RSApop.NewScreen[zz*18 + AgeGroup][CurrYear-StartYear] += 1;}
 	if(repeat==1 ){RSApop.NewRepeatScreen[zz*18 + AgeGroup][CurrYear-StartYear] += 1;}
+	timetoScreen=0;
 
 	//is pap adequate?
 	if(ade < PapAdequacy[CurrYear-StartYear]){
