@@ -12732,20 +12732,15 @@ void Indiv::GetScreened(
 {
 
 	int xx, yy, zz;
-	// Get age that matches coverage age
-	yy = 0;
-	if (AgeGroup == 6 || AgeGroup == 7)
-	{
-		yy = 1;
-	}
-	else if (AgeGroup == 8 || AgeGroup == 9)
-	{
-		yy = 2;
-	}
-	else if (AgeGroup >= 10)
-	{
-		yy = 3;
-	}
+    // Get age that matches coverage age
+    yy = 0;
+    if (AgeGroup == 5 || AgeGroup == 6|| AgeGroup == 7) {
+      yy = 1;
+    } else if (AgeGroup == 8 || AgeGroup == 9 || AgeGroup == 10) {
+      yy = 2;
+    } else if (AgeGroup >= 11) {
+      yy = 3;
+    }
 	if (HIVstage == 5 || HIVstage == 6)
 	{
 		zz = 1;
@@ -12792,8 +12787,8 @@ void Indiv::GetScreened(
 				reason = 1;
 			}
 			// timetoScreen=0;
-			if (InvCaseAlgorithm == 1){ 
-				if(acceptRand < HPVScaleUpProp[CurrYear - StartYear])
+			if (InvCaseAlgorithm == 1 ){ 
+				if((acceptRand < HPVScaleUpProp[CurrYear - StartYear]) && CurrYear >= ImplementYR)
 				{
 				HPVScreenAlgorithm_InvCase(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII, SIV, SId, SIId, SIIId, SIVd, acceptRand, efficacyD1Rand); // reusing random numbers to save computational time
 				}
@@ -12887,7 +12882,7 @@ void Indiv::GetScreened(
 			}
 			// timetoScreen=0;
 			if (InvCaseAlgorithm == 1){
-				if(acceptRand < HPVScaleUpProp[CurrYear - StartYear])
+				if(acceptRand < HPVScaleUpProp[CurrYear - StartYear] && CurrYear >= ImplementYR)
 				{
 					HPVScreenAlgorithm_InvCase(ID, rea, ade, tts, res, ttC, CCd, SI, SII, SIII, SIV, SId, SIId, SIIId, SIVd, acceptRand, efficacyD1Rand);
 				}
@@ -13078,6 +13073,7 @@ void Indiv::ScreenAlgorithm(int ID, double rea,  double ade, double tts, double 
 	//if(HIVstage<5 && ScreenCount>=10*48){ScreenCount=0;}
 	//if(HIVstage>=5 &&  ScreenCount>=3*48){ScreenCount=0;}
 	//when using the dumb coverage estimate:
+
 	if(repeat==0 ){RSApop.NewScreen[zz*18 + AgeGroup][CurrYear-StartYear] += 1;}
 	if(repeat==1 ){RSApop.NewRepeatScreen[zz*18 + AgeGroup][CurrYear-StartYear] += 1;}
 
@@ -17269,11 +17265,11 @@ void Indiv::HPVScreenAlgorithm(
     int xx, yy, zz;
     // Get age that matches coverage age
     yy = 0;
-    if (AgeGroup == 6 || AgeGroup == 7) {
+    if (AgeGroup == 5 || AgeGroup == 6|| AgeGroup == 7) {
       yy = 1;
-    } else if (AgeGroup == 8 || AgeGroup == 9) {
+    } else if (AgeGroup == 8 || AgeGroup == 9 || AgeGroup == 10) {
       yy = 2;
-    } else if (AgeGroup >= 10) {
+    } else if (AgeGroup >= 11) {
       yy = 3;
     }
 
